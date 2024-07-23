@@ -3,11 +3,11 @@ name: Release Drafter
 on:
   push:
     branches:
-      - 2.x
+      - add/release_notes
 
 jobs:
   update_release_draft:
-    if: github.repository == 'opensearch-project/dashboards-flow-framework'
+    if: github.repository == 'saimedhi/dashboards-flow-framework'
     name: Update draft release notes
     runs-on: ubuntu-latest
     steps:
