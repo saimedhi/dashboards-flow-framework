@@ -18,3 +18,15 @@ export const BREADCRUMBS = Object.freeze({
   FLOW_FRAMEWORK: { text: 'Flow Framework' },
   WORKFLOWS: { text: 'Workflows', href: `#${APP_PATH.WORKFLOWS}` },
 });
+
+export const DATA_SOURCE_ID = 'dataSourceId';
+
+export const DEFAULT_QUERY_PARAMS = {
+  from: 0,
+  search: '',
+  indices: '',
+  size: 20,
+  sortDirection: SORT_DIRECTION.ASC,
+  sortField: 'name',
+  dataSourceId: '',
+};
