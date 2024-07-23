@@ -41,6 +41,7 @@ categories:
       - 'version upgrade'
       - 'opensearch release'
   - title: 'Refactoring'
+  
     labels:
       - 'refactor'
       - 'code quality'
