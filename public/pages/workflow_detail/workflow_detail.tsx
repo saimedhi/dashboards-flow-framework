@@ -26,13 +26,17 @@ import {
 // styling
 import './workflow-detail-styles.scss';
 import '../../global-styles.scss';
+import { MountPoint } from '../../../../../src/core/public';
 
 export interface WorkflowDetailRouterProps {
   workflowId: string;
 }
 
 interface WorkflowDetailProps
-  extends RouteComponentProps<WorkflowDetailRouterProps> {}
+  extends RouteComponentProps<WorkflowDetailRouterProps> {
+    setActionMenu: (menuMount: MountPoint | undefined) => void;
+    landingDataSourceId: string | undefined;  
+  }
 
 /**
  * The workflow details page. This is where users will configure, create, and
