@@ -17,4 +17,6 @@ jobs:
           config-name: draft-release-notes-config.yml
           name: Version (set here)
           tag: (None)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
