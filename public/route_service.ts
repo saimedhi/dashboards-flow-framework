@@ -33,8 +33,8 @@ import {
  * Used in redux by wrapping them in async thunk functions which mutate redux state when executed.
  */
 export interface RouteService {
-  getWorkflow: (workflowId: string) => Promise<any | HttpFetchError>;
-  searchWorkflows: (body: {}) => Promise<any | HttpFetchError>;
+  getWorkflow: (workflowId: string, dataSourceId: string) => Promise<any | HttpFetchError>;
+  searchWorkflows: (body: {}, dataSourceId: string) => Promise<any | HttpFetchError>;
   getWorkflowState: (workflowId: string) => Promise<any | HttpFetchError>;
   createWorkflow: (body: {}) => Promise<any | HttpFetchError>;
   updateWorkflow: (
@@ -57,7 +57,7 @@ export interface RouteService {
   ) => Promise<any | HttpFetchError>;
   ingest: (index: string, doc: {}) => Promise<any | HttpFetchError>;
   bulk: (body: {}, ingestPipeline?: string) => Promise<any | HttpFetchError>;
-  searchModels: (body: {}) => Promise<any | HttpFetchError>;
+  searchModels: (dataSourceId: string, body: {}) => Promise<any | HttpFetchError>;
   simulatePipeline: (body: {
     pipeline: IngestPipelineConfig;
     docs: SimulateIngestPipelineDoc[];
@@ -66,11 +66,11 @@ export interface RouteService {
 
 export function configureRoutes(core: CoreStart): RouteService {
   return {
-    getWorkflow: async (workflowId: string) => {
+    getWorkflow: async (workflowId: string, dataSourceId: string) => {
       try {
-        const response = await core.http.get<{ respString: string }>(
-          `${GET_WORKFLOW_NODE_API_PATH}/${workflowId}`
-        );
+        const baseUrl = `${GET_WORKFLOW_NODE_API_PATH}/${workflowId}`;
+        const url = dataSourceId ? `${baseUrl}/${dataSourceId}` : baseUrl;
+        const response = await core.http.get<{ respString: string }>(url);
         return response;
       } catch (e: any) {
         return e as HttpFetchError;

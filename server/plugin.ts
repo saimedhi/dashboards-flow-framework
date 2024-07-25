@@ -24,8 +24,15 @@ import {
   registerMLRoutes,
   MLRoutesService,
 } from './routes';
+import { DataSourcePluginSetup } from '../../../src/plugins/data_source/server/types';
+import { DataSourceManagementPlugin } from '../../../src/plugins/data_source_management/public';
 
 import { ILegacyClusterClient } from '../../../src/core/server/';
+
+export interface FFPluginSetupDependencies {
+  dataSourceManagement: ReturnType<DataSourceManagementPlugin['setup']>;
+  dataSource: DataSourcePluginSetup;
+}
 
 export class FlowFrameworkDashboardsPlugin
   implements
@@ -41,25 +48,35 @@ export class FlowFrameworkDashboardsPlugin
     this.globalConfig$ = initializerContext.config.legacy.globalConfig$;
   }
 
-  public async setup(core: CoreSetup) {
+  public async setup(
+    core: CoreSetup,
+    { dataSource }: FFPluginSetupDependencies
+    ) {
     this.logger.debug('flow-framework-dashboards: Setup');
     const router = core.http.createRouter();
 
     // Get global config
     const globalConfig = await this.globalConfig$.pipe(first()).toPromise();
 
+    const dataSourceEnabled = !!dataSource;
+
+
+    let client: ILegacyClusterClient | undefined = undefined;
+
     // Create OpenSearch client, including flow framework plugin APIs
-    const client: ILegacyClusterClient = core.opensearch.legacy.createClient(
-      'flow_framework',
-      {
+    if (!dataSourceEnabled) {
+      client = core.opensearch.legacy.createClient('flow_framework', {
         plugins: [flowFrameworkPlugin, mlPlugin],
         ...globalConfig.opensearch,
-      }
-    );
+      });
+    } else {
+      dataSource.registerCustomApiSchema(flowFrameworkPlugin);
+      dataSource.registerCustomApiSchema(mlPlugin);
+    }
 
-    const opensearchRoutesService = new OpenSearchRoutesService(client);
-    const flowFrameworkRoutesService = new FlowFrameworkRoutesService(client);
-    const mlRoutesService = new MLRoutesService(client);
+    const opensearchRoutesService = new OpenSearchRoutesService(client, dataSourceEnabled);
+    const flowFrameworkRoutesService = new FlowFrameworkRoutesService(client, dataSourceEnabled);
+    const mlRoutesService = new MLRoutesService(client, dataSourceEnabled);
 
     // Register server side APIs with the corresponding service functions
     registerOpenSearchRoutes(router, opensearchRoutesService);
