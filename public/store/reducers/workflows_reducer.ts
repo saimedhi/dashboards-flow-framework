@@ -26,9 +26,9 @@ const DELETE_WORKFLOW_ACTION = `${WORKFLOWS_ACTION_PREFIX}/delete`;
 
 export const getWorkflow = createAsyncThunk(
   GET_WORKFLOW_ACTION,
-  async (workflowId: string, { rejectWithValue }) => {
+  async ({workflowId, dataSourceId}:{workflowId: string, dataSourceId:string}, { rejectWithValue }) => {
     const response: any | HttpFetchError = await getRouteService().getWorkflow(
-      workflowId
+      workflowId, dataSourceId,
     );
     if (response instanceof HttpFetchError) {
       return rejectWithValue(
@@ -42,10 +42,10 @@ export const getWorkflow = createAsyncThunk(
 
 export const searchWorkflows = createAsyncThunk(
   SEARCH_WORKFLOWS_ACTION,
-  async (body: {}, { rejectWithValue }) => {
+  async ({body, dataSourceId}:{body: {}, dataSourceId:string}, { rejectWithValue }) => {
     const response:
       | any
-      | HttpFetchError = await getRouteService().searchWorkflows(body);
+      | HttpFetchError = await getRouteService().searchWorkflows(body, dataSourceId);
     if (response instanceof HttpFetchError) {
       return rejectWithValue(
         'Error searching workflows: ' + response.body.message
