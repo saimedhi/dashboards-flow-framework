@@ -1,5 +1,5 @@
 {
-    "name": "Semantic Search",
+    "name": "Semantic Search2",
     "description": "A basic workflow containing the ingest pipeline and index configurations for performing semantic search",
     "version": {
         "template": "1.0.0",
