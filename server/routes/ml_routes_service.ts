@@ -69,7 +69,7 @@ export class MLRoutesService {
       );
       const modelsResponse = callWithRequest(
         'mlClient.searchModels', { body });      
-      const modelHits = modelsResponse.hits.hits as any[];
+      const modelHits = (modelsResponse.hits ? modelsResponse.hits.hits : []) as any[];
       const modelDict = getModelsFromResponses(modelHits);
 
       return res.ok({ body: { models: modelDict } });

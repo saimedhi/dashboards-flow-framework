@@ -335,7 +335,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
           dispatch(searchIndex({ index: indexName, body: props.query }))
             .unwrap()
             .then(async (resp) => {
-              const hits = resp.hits.hits;
+              const hits = resp.hits?.hits;
               props.setQueryResponse(JSON.stringify(hits, undefined, 2));
               dispatch(removeDirty());
             })

@@ -375,12 +375,12 @@ export class FlowFrameworkRoutesService {
       const workflowsResponse = await callWithRequest('flowFramework.searchWorkflows', {
         body,
       });
-      const workflowHits = workflowsResponse.hits.hits as any[];
+      const workflowHits = workflowsResponse.hits?.hits as any[] | []
 
       const workflowStatesResponse = await callWithRequest('flowFramework.searchWorkflowState', {
         body,
       });
-      const workflowStateHits = workflowStatesResponse.hits.hits as any[];
+      const workflowStateHits = workflowStatesResponse.hits?.hits as any[] | []
 
       const workflowDict = getWorkflowsFromResponses(
         workflowHits,
