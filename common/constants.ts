@@ -57,7 +57,7 @@ export const SEARCH_MODELS_NODE_API_PATH = `${BASE_MODEL_NODE_API_PATH}/search`;
 
 // frontend-specific workflow types, derived from the available preset templates
 export enum WORKFLOW_TYPE {
-  SEMANTIC_SEARCH = 'Semantic search',
+  SEMANTIC_SEARCH = 'Semantic search 1',
   CUSTOM = 'Custom',
   UNKNOWN = 'Unknown',
 }
