@@ -45,7 +45,10 @@ export function ModelField(props: ModelFieldProps) {
   // re-fetch here as it could overload client-side if user clicks back and forth /
   // keeps re-rendering this component (and subsequently re-fetching data) as they're building flows
   const models = useSelector((state: AppState) => state.models.models);
-
+  
+  const abc = useSelector((state: AppState) => 
+  state.models);
+  console.log("abc", abc);
   const { errors, touched } = useFormikContext<WorkspaceFormValues>();
 
   // Deployed models state
@@ -53,6 +56,9 @@ export function ModelField(props: ModelFieldProps) {
 
   // Hook to update available deployed models
   useEffect(() => {
+    console.log("##################################");
+    console.log("model", models);
+    console.log("##################################");
     if (models) {
       const modelItems = [] as ModelItem[];
       Object.keys(models).forEach((modelId) => {
