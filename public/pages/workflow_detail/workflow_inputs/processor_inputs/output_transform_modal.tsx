@@ -42,6 +42,7 @@ import {
 import { simulatePipeline, useAppDispatch } from '../../../../store';
 import { getCore } from '../../../../services';
 import { MapArrayField } from '../input_fields';
+import { getDataSourceId } from '../../../../utils/utils';
 
 interface OutputTransformModalProps {
   uiConfig: WorkflowConfig;
@@ -59,6 +60,7 @@ interface OutputTransformModalProps {
  */
 export function OutputTransformModal(props: OutputTransformModalProps) {
   const dispatch = useAppDispatch();
+  const dataSourceId = getDataSourceId();
   const { values } = useFormikContext<WorkflowFormValues>();
 
   // source input / transformed output state
@@ -114,10 +116,11 @@ export function OutputTransformModal(props: OutputTransformModalProps) {
                         values.ingest.index.name
                       );
                       await dispatch(
-                        simulatePipeline({
+                        simulatePipeline({apiBody:{
                           pipeline: curIngestPipeline,
                           docs: curDocs,
-                        })
+                        },
+                      dataSourceId})
                       )
                         .unwrap()
                         .then((resp: SimulateIngestPipelineResponse) => {

@@ -14,14 +14,14 @@ import {
   FlowFrameworkDashboardsPluginStart,
 } from './types';
 import { PLUGIN_ID } from '../common';
-import { 
-  setCore, 
+import {
+  setCore,
   setRouteService,
   setSavedObjectsClient,
   setDataSourceManagementPlugin,
   setDataSourceEnabled,
   setNotifications,
- } from './services';
+} from './services';
 import { configureRoutes } from './route_service';
 import { DataSourceManagementPluginSetup } from '../../../src/plugins/data_source_management/public';
 import { DataSourcePluginSetup } from '../../../src/plugins/data_source/public';
@@ -38,7 +38,7 @@ export class FlowFrameworkDashboardsPlugin
       FlowFrameworkDashboardsSetupDeps,
       FlowFrameworkDashboardsPluginStart
     > {
-  public setup(core: CoreSetup, plugins: any) {
+  public setup(core: CoreSetup, plugins: any): any {
     // Register the plugin in the side navigation
     core.application.register({
       id: PLUGIN_ID,
