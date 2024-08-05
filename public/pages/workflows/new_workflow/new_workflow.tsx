@@ -9,7 +9,7 @@ import {
   EuiFlexItem,
   EuiFlexGrid,
   EuiFlexGroup,
-  EuiFieldSearch,
+  EuiCompressedFieldSearch,
   EuiLoadingSpinner,
 } from '@elastic/eui';
 import { useSelector } from 'react-redux';
@@ -75,7 +75,7 @@ export function NewWorkflow(props: NewWorkflowProps) {
   return (
     <EuiFlexGroup direction="column">
       <EuiFlexItem grow={true}>
-        <EuiFieldSearch
+        <EuiCompressedFieldSearch
           fullWidth={true}
           placeholder="Search"
           onChange={(e) => debounceSearchQuery(e.target.value)}
