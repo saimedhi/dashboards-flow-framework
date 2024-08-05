@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch, Redirect } from 'react-router-dom';
 import {
   EuiPageSideBar,
   EuiSideNav,
@@ -21,12 +21,22 @@ import {
 
 // styling
 import './global-styles.scss';
+import { useSelector } from 'react-redux';
+import { AppState } from './store';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps {
+  landingPage: string | undefined;
+  hideInAppSideNavBar: boolean;
+}
 
 export const FlowFrameworkDashboardsApp = (props: Props) => {
+  const { landingPage, hideInAppSideNavBar} = props;
+  // const hideSideNavBar = useSelector(
+  //   (state: AppState) => state.workflows.hideSideNavBar
+  // ) || hideInAppSideNavBar;
+  const hideSideNavBar = hideInAppSideNavBar;
   const sidebar = (
-    <EuiPageSideBar style={{ minWidth: 190 }} hidden={false} paddingSize="l">
+    <EuiPageSideBar style={{ minWidth: 190 }} hidden={hideSideNavBar} paddingSize="l">
       <EuiSideNav
         style={{ width: 190 }}
         items={[
@@ -76,7 +86,10 @@ export const FlowFrameworkDashboardsApp = (props: Props) => {
           <Route
             path={`${APP_PATH.HOME}`}
             render={(routeProps: RouteComponentProps<WorkflowsRouterProps>) => {
-              if (props.history.location.pathname !== APP_PATH.WORKFLOWS) {
+              if(landingPage){
+                return <Redirect from="/" to={landingPage} />;
+              }
+              else if (props.history.location.pathname !== APP_PATH.WORKFLOWS) {
                 props.history.replace({
                   ...history,
                   pathname: APP_PATH.WORKFLOWS,

@@ -16,14 +16,18 @@ import './global-styles.scss';
 
 export const renderApp = (
   coreStart: CoreStart,
-  { appBasePath, element }: AppMountParameters
+  { appBasePath, element }: AppMountParameters,
+  landingPage: string | undefined, hideInAppSideNavBar: boolean
 ) => {
   // This is so our base element stretches to fit the entire webpage
   element.className = 'stretch-absolute';
   ReactDOM.render(
     <Provider store={store}>
       <Router basename={appBasePath + '#/'}>
-        <Route render={(props) => <FlowFrameworkDashboardsApp {...props} />} />
+        <Route render={(props) => <FlowFrameworkDashboardsApp 
+        landingPage={landingPage}
+        hideInAppSideNavBar={hideInAppSideNavBar}
+        {...props} />} />
       </Router>
     </Provider>,
     element
