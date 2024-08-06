@@ -18,7 +18,7 @@ import {
 } from '@elastic/eui';
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
-import { BREADCRUMBS, MDS_BREADCRUMBS } from '../../utils';
+import { BREADCRUMBS } from '../../utils';
 import { getCore } from '../../services';
 import { WorkflowList } from './workflow_list';
 import { NewWorkflow } from './new_workflow';
@@ -126,13 +126,13 @@ export function Workflows(props: WorkflowsProps) {
   useEffect(() => {
     if (dataSourceEnabled) {
       getCore().chrome.setBreadcrumbs([
-        MDS_BREADCRUMBS.FLOW_FRAMEWORK,
-        MDS_BREADCRUMBS.WORKFLOWS(MDSOverviewState.selectedDataSourceId),
+        BREADCRUMBS.FLOW_FRAMEWORK,
+        BREADCRUMBS.WORKFLOWS(MDSOverviewState.selectedDataSourceId),
       ]);
     } else {
       getCore().chrome.setBreadcrumbs([
         BREADCRUMBS.FLOW_FRAMEWORK,
-        BREADCRUMBS.WORKFLOWS,
+        BREADCRUMBS.WORKFLOWS(),
       ]);
     }
   });
