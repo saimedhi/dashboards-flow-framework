@@ -237,13 +237,12 @@ export const getDataSourceFromURL = (location: {
 }): MDSQueryParams => {
   const queryParams = queryString.parse(location.search);
   const dataSourceId = queryParams.dataSourceId;
-  return { dataSourceId: typeof dataSourceId === 'string' ? dataSourceId : '' };
+  return { dataSourceId: typeof dataSourceId === 'string' ? dataSourceId : undefined };
 };
 
 export const constructHrefWithDataSourceId = (
   basePath: string,
-  dataSourceId: string = '',
-  withHash: boolean
+  dataSourceId: string = ''
 ): string => {
   const dataSourceEnabled = getDataSourceEnabled().enabled;
   const url = new URLSearchParams();
@@ -253,7 +252,7 @@ export const constructHrefWithDataSourceId = (
   // we share this helper function to construct the href with dataSourceId
   // some places we need to return the url with hash, some places we don't need to
   // so adding this flag to indicate if we want to return the url with hash
-  return `${withHash ? '#' : ''}${basePath}?${url.toString()}`;
+  return `#${basePath}?${url.toString()}`;
 };
 
 export const getDataSourceId = () => {
