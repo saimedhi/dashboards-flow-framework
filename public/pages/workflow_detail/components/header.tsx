@@ -19,6 +19,11 @@ import {
   toFormattedDate,
 } from '../../../../common';
 import { APP_PATH } from '../../../utils';
+import {
+  getApplication,
+  getNavigationUI,
+  getUISettings,
+} from '../../../services';
 
 interface WorkflowDetailHeaderProps {
   workflow?: Workflow;
@@ -47,17 +52,47 @@ export function WorkflowDetailHeader(props: WorkflowDetailHeaderProps) {
     }
   }, [props.workflow]);
 
-  return (
+  const { HeaderControl } = getNavigationUI();
+  const { setAppCenterControls } = getApplication();
+  const uiSettings = getUISettings();
+  const showActionsInHeader = uiSettings.get('home:useNewHomePage');
+  const title = (
+    <EuiFlexGroup direction="row" alignItems="flexEnd" gutterSize="m">
+      <EuiFlexItem grow={false}>{workflowName}</EuiFlexItem>
+      <EuiFlexItem grow={false} style={{ marginBottom: '10px' }}>
+        <EuiText size="m">{workflowState}</EuiText>
+      </EuiFlexItem>
+    </EuiFlexGroup>
+  );
+
+  return showActionsInHeader ? (
+    <>
+      <HeaderControl
+        setMountPoint={setAppCenterControls}
+        controls={[
+          {
+            renderComponent: [
+              <EuiSmallButtonEmpty
+                style={{ marginTop: '8px' }}
+                onClick={() => {
+                  // TODO: add lightweight save here when available
+                  history.replace(APP_PATH.WORKFLOWS);
+                }}
+              >
+                Close
+              </EuiSmallButtonEmpty>,
+              <EuiText style={{ marginTop: '16px' }} color="subdued" size="s">
+                {`Last updated: ${workflowLastUpdated}`}
+              </EuiText>,
+            ],
+          },
+        ]}
+      />
+    </>
+  ) : (
     <EuiPageHeader
       style={{ marginTop: '-8px' }}
-      pageTitle={
-        <EuiFlexGroup direction="row" alignItems="flexEnd" gutterSize="m">
-          <EuiFlexItem grow={false}>{workflowName}</EuiFlexItem>
-          <EuiFlexItem grow={false} style={{ marginBottom: '10px' }}>
-            <EuiText size="m">{workflowState}</EuiText>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      }
+      pageTitle={title}
       rightSideItems={[
         <EuiSmallButtonEmpty
           style={{ marginTop: '8px' }}

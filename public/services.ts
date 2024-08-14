@@ -4,9 +4,14 @@
  */
 
 import { createGetterSetter } from '../../../src/plugins/opensearch_dashboards_utils/public';
-import { CoreStart, NotificationsStart } from '../../../src/core/public';
+import {
+  CoreStart,
+  NotificationsStart,
+  IUiSettingsClient,
+} from '../../../src/core/public';
 import { RouteService } from './route_service';
 import { DataSourceManagementPluginSetup } from '../../../src/plugins/data_source_management/public';
+import { NavigationPublicPluginStart } from '../../../src/plugins/navigation/public';
 
 export interface DataSourceEnabled {
   enabled: boolean;
@@ -37,3 +42,15 @@ export const [getDataSourceEnabled, setDataSourceEnabled] = createGetterSetter<
 export const [getNotifications, setNotifications] = createGetterSetter<
   NotificationsStart
 >('Notifications');
+
+export const [getUISettings, setUISettings] = createGetterSetter<
+  IUiSettingsClient
+>('UISettings');
+
+export const [getApplication, setApplication] = createGetterSetter<
+  CoreStart['application']
+>('application');
+
+export const [getNavigationUI, setNavigationUI] = createGetterSetter<
+  NavigationPublicPluginStart['ui']
+>('navigation');

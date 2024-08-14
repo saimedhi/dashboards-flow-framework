@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { ReactFlowProvider } from 'reactflow';
 import { EuiPage, EuiPageBody } from '@elastic/eui';
 import { BREADCRUMBS } from '../../utils';
-import { getCore } from '../../services';
+import { getCore, getUISettings } from '../../services';
 import { WorkflowDetailHeader } from './components';
 import {
   AppState,
@@ -64,7 +64,22 @@ export function WorkflowDetail(props: WorkflowDetailProps) {
   const workflow = workflows[workflowId];
   const workflowName = workflow ? workflow.name : DEFAULT_NEW_WORKFLOW_NAME;
 
+  const uiSettings = getUISettings();
+  const showActionsInHeader = uiSettings.get('home:useNewHomePage');
   useEffect(() => {
+    if (showActionsInHeader) {
+      if (dataSourceEnabled) {
+      getCore().chrome.setBreadcrumbs([
+        BREADCRUMBS.TITLE_WITH_REF(dataSourceId),
+        BREADCRUMBS.WORKFLOW_NAME(workflowName),
+      ]);
+    } else {
+      getCore().chrome.setBreadcrumbs([
+        BREADCRUMBS.TITLE_WITH_REF(),
+        BREADCRUMBS.WORKFLOW_NAME(workflowName),
+      ]);
+    }
+  } else {
     if (dataSourceEnabled) {
       getCore().chrome.setBreadcrumbs([
         BREADCRUMBS.FLOW_FRAMEWORK,
@@ -77,8 +92,8 @@ export function WorkflowDetail(props: WorkflowDetailProps) {
         BREADCRUMBS.WORKFLOWS(),
         { text: workflowName },
       ]);
-    }
-  }, []);
+    }}
+  }, [workflowName]);
 
   // On initial load:
   // - fetch workflow
@@ -106,6 +121,8 @@ export function WorkflowDetail(props: WorkflowDetailProps) {
       />
     );
   }
+
+  console.log("workflow printed", workflow);
 
   return (
     <ReactFlowProvider>
