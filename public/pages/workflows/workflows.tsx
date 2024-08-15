@@ -19,7 +19,12 @@ import {
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 import { BREADCRUMBS } from '../../utils';
-import { getCore } from '../../services';
+import {
+  getApplication,
+  getCore,
+  getNavigationUI,
+  getUISettings,
+} from '../../services';
 import { WorkflowList } from './workflow_list';
 import { NewWorkflow } from './new_workflow';
 import { AppState, searchWorkflows, useAppDispatch } from '../../store';
@@ -77,12 +82,17 @@ export function Workflows(props: WorkflowsProps) {
   const location = useLocation();
   const queryParams = getDataSourceFromURL(location);
   const dataSourceEnabled = getDataSourceEnabled().enabled;
-  const [dataSourceId, setDataSourceId] = useState<string>(
+  const [dataSourceId, setDataSourceId] = useState<string | undefined>(
     queryParams.dataSourceId
   );
   const { workflows, loading } = useSelector(
     (state: AppState) => state.workflows
   );
+
+  const uiSettings = getUISettings();
+  const showActionsInHeader = uiSettings.get('home:useNewHomePage');
+  const { HeaderControl } = getNavigationUI();
+  const { setAppBottomControls } = getApplication();
 
   // import modal state
   const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
@@ -117,16 +127,20 @@ export function Workflows(props: WorkflowsProps) {
   }, [selectedTabId]);
 
   useEffect(() => {
-    if (dataSourceEnabled) {
-      getCore().chrome.setBreadcrumbs([
-        BREADCRUMBS.FLOW_FRAMEWORK,
-        BREADCRUMBS.WORKFLOWS(dataSourceId),
-      ]);
+    if (showActionsInHeader) {
+      getCore().chrome.setBreadcrumbs([BREADCRUMBS.TITLE]);
     } else {
-      getCore().chrome.setBreadcrumbs([
-        BREADCRUMBS.FLOW_FRAMEWORK,
-        BREADCRUMBS.WORKFLOWS(),
-      ]);
+      if (dataSourceEnabled) {
+        getCore().chrome.setBreadcrumbs([
+          BREADCRUMBS.FLOW_FRAMEWORK,
+          BREADCRUMBS.WORKFLOWS(dataSourceId),
+        ]);
+      } else {
+        getCore().chrome.setBreadcrumbs([
+          BREADCRUMBS.FLOW_FRAMEWORK,
+          BREADCRUMBS.WORKFLOWS(),
+        ]);
+      }
     }
   });
 
@@ -196,6 +210,25 @@ export function Workflows(props: WorkflowsProps) {
       );
     }, [getSavedObjectsClient, getNotifications(), props.setActionMenu]);
   }
+  const description = (
+    <EuiText color="subdued">
+      Design, experiment, and prototype your solutions with workflows. Build
+      your search and last mile ingestion flows.
+    </EuiText>
+  );
+  const pageTitleAndDescription = showActionsInHeader ? (
+    <HeaderControl
+      controls={[{ description }]}
+      setMountPoint={setAppBottomControls}
+    />
+  ) : (
+    <EuiFlexGroup direction="column" style={{ margin: '0px' }}>
+      <EuiTitle size="l">
+        <h1>Search Studio</h1>
+      </EuiTitle>
+      {description}
+    </EuiFlexGroup>
+  );
 
   return (
     <>
@@ -210,17 +243,7 @@ export function Workflows(props: WorkflowsProps) {
       <EuiPage>
         <EuiPageBody>
           <EuiPageHeader
-            pageTitle={
-              <EuiFlexGroup direction="column" style={{ margin: '0px' }}>
-                <EuiTitle size="l">
-                  <h1>Search Studio</h1>
-                </EuiTitle>
-                <EuiText color="subdued">
-                  Design, experiment, and prototype your solutions with
-                  workflows. Build your search and last mile ingestion flows.
-                </EuiText>
-              </EuiFlexGroup>
-            }
+            pageTitle={pageTitleAndDescription}
             tabs={[
               {
                 id: WORKFLOWS_TAB.MANAGE,
