@@ -12,6 +12,7 @@ import {
   RouteComponentProps,
   Route,
   Switch,
+  MemoryRouter,
 } from 'react-router-dom';
 import { store } from '../../store';
 import { WorkflowDetail } from './workflow_detail';
@@ -28,7 +29,7 @@ jest.mock('../../services', () => {
 const renderWithRouter = (initialEntries: string[]) =>
   render(
     <Provider store={store}>
-      <Router>
+      <MemoryRouter initialEntries = {initialEntries}> 
         <Switch>
           <Route
             path="/workflow/:workflowId"
@@ -37,7 +38,7 @@ const renderWithRouter = (initialEntries: string[]) =>
             )}
           />
         </Switch>
-      </Router>
+      </MemoryRouter>
     </Provider>
   );
 
