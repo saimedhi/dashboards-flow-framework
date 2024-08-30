@@ -25,7 +25,7 @@ jest.mock('../../services', () => {
     ...mockCoreServices,
   };
 });
-const mockSetActionMenu = jest.fn();
+//const mockSetActionMenu = jest.fn();
 
 const mockProps: RouteComponentProps<{
   workflowId: string;
@@ -68,7 +68,7 @@ describe('WorkflowDetail', () => {
   test('renders the WorkflowDetail component', () => {
     const { container } = render(
       <Provider store={store}>
-        <WorkflowDetail {...mockProps} setActionMenu={mockSetActionMenu} />
+        <WorkflowDetail {...mockProps} setActionMenu={jest.fn()} />
       </Provider>
     );
 
