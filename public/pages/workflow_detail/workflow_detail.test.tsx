@@ -25,7 +25,7 @@ jest.mock('../../services', () => {
   };
 });
 
-const renderWithRouter = () =>
+const renderWithRouter = (initialEntries: string[]) =>
   render(
     <Provider store={store}>
       <Router>
@@ -42,9 +42,18 @@ const renderWithRouter = () =>
   );
 
 describe('WorkflowDetail', () => {
-  test('renders the page', () => {
-    const { container, baseElement } = renderWithRouter();
-    expect(baseElement.tagName).toBe('BODY');
-    expect(container.tagName).toBe('DIV');
+  test('renders the page with workflowId parameter', () => {
+    // Render the component with a specific workflowId
+    const workflowId = '12345';
+    const { getAllByText } = renderWithRouter([`/workflow/${workflowId}`]);
+
+    // // Assertions
+    // expect(baseElement.tagName).toBe('BODY');
+    // expect(container.tagName).toBe('DIV');
+
+    // Add additional assertions to verify the component renders content based on workflowId
+    // For example, you might want to check if certain elements are present
+    // expect(container.innerHTML).toContain(Workflow ID: ${workflowId});
+    expect(getAllByText('Workflows abcd').length).toBeGreaterThan(0);
   });
 });
