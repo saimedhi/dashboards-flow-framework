@@ -44,6 +44,6 @@ const renderWithRouter = (workflowId:any) =>
 describe('WorkflowDetail', () => {
   test('renders the page', () => {
     const { getAllByText } = renderWithRouter(jest.fn());
-    expect(getAllByText('Workflows').length).toBeGreaterThan(0);
+    expect(getAllByText('Workflowsabcdef').length).toBeGreaterThan(0);
   });
 });
