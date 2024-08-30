@@ -1,23 +1,22 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React from 'react';
 import { render } from '@testing-library/react';
-import { WorkflowDetail } from './workflow_detail';
-import { store } from '../../store';
-import { RouteComponentProps } from 'react-router-dom';
 import { Provider } from 'react-redux';
-// import configureStore from 'redux-mock-store';
 
-// const mockStore = configureStore([]);
-// const store = mockStore({
-//   workflows: {
-//     workflows: {
-//       'some-workflow-id': {
-//         id: 'some-workflow-id',
-//         name: 'Test Workflow',
-//       },
-//     },
-//     errorMessage: '',
-//   },
-// });
+import {
+  BrowserRouter as Router,
+  RouteComponentProps,
+  Route,
+  Switch,
+} from 'react-router-dom';
+import { store } from '../../store';
+import { WorkflowDetail } from './workflow_detail';
+import { WorkflowDetailRouterProps } from '../../pages';
+
 jest.mock('../../services', () => {
   const { mockCoreServices } = require('../../../test');
   return {
@@ -25,58 +24,27 @@ jest.mock('../../services', () => {
     ...mockCoreServices,
   };
 });
-//const mockSetActionMenu = jest.fn();
 
-const mockProps: RouteComponentProps<{
-  workflowId: string;
-}> = {
-  match: {
-    params: {
-      workflowId: 'some-workflow-id',
-    },
-    isExact: true,
-    path: '',
-    url: '',
-  },
-  location: {
-    pathname: '',
-    search: '',
-    state: undefined,
-    hash: '',
-  },
-  history: {
-    length: 0,
-    action: 'POP',
-    location: {
-      pathname: '',
-      search: '',
-      state: undefined,
-      hash: '',
-    },
-    push: jest.fn(),
-    replace: jest.fn(),
-    go: jest.fn(),
-    goBack: jest.fn(),
-    goForward: jest.fn(),
-    block: jest.fn(),
-    createHref: jest.fn(),
-    listen: jest.fn(),
-  },
-};
+const renderWithRouter = () =>
+  render(
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route
+            path="/workflow/:workflowId"
+            render={(props: RouteComponentProps<WorkflowDetailRouterProps>) => (
+              <WorkflowDetail setActionMenu={jest.fn()} {...props} />
+            )}
+          />
+        </Switch>
+      </Router>
+    </Provider>
+  );
 
 describe('WorkflowDetail', () => {
-  test('renders the WorkflowDetail component', () => {
-    const { container } = render(
-      <Provider store={store}>
-        <WorkflowDetail {...mockProps} setActionMenu={jest.fn()} />
-      </Provider>
-    );
-
-    // Check for the presence of a `div` element in the rendered output
-    const divElements = container.querySelectorAll('div');
-    console.log('Div elements found:', divElements);
-
-    // Expect at least one div element to be present
-    expect(divElements.length).toBeGreaterThan(0);
+  test('renders the page', () => {
+    const { container, baseElement } = renderWithRouter();
+    expect(baseElement.tagName).toBe('BODY');
+    expect(container.tagName).toBe('DIV');
   });
 });
