@@ -25,7 +25,7 @@ jest.mock('../../services', () => {
   };
 });
 
-const renderWithRouter = () =>
+const renderWithRouter = (workflowId:any) =>
   render(
     <Provider store={store}>
       <Router>
@@ -43,8 +43,7 @@ const renderWithRouter = () =>
 
 describe('WorkflowDetail', () => {
   test('renders the page', () => {
-    const { container, baseElement } = renderWithRouter();
-    expect(baseElement.tagName).toBe('BODY');
-    expect(container.tagName).toBe('DIV');
+    const { getAllByText } = renderWithRouter(jest.fn());
+    expect(getAllByText('Workflows').length).toBeGreaterThan(0);
   });
 });
