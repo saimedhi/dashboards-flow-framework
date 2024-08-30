@@ -48,6 +48,8 @@ const TOOLS_PANEL_ID = 'tools_panel_id';
  * panels - the ReactFlow workspace panel and the selected component details panel.
  */
 export function ResizableWorkspace(props: ResizableWorkspaceProps) {
+
+  console.log("ResizableWorkspace props printed", props)
   // Workflow state
   const [workflow, setWorkflow] = useState<Workflow | undefined>(
     props.workflow
