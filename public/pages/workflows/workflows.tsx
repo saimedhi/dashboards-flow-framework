@@ -86,6 +86,8 @@ export function Workflows(props: WorkflowsProps) {
     (state: AppState) => state.workflows
   );
 
+  console.log("workflows printed in T1", workflows);
+
   const {
     chrome: { setBreadcrumbs },
   } = getCore();
