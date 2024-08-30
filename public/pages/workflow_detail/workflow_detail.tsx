@@ -61,6 +61,7 @@ interface WorkflowDetailProps
  */
 
 export function WorkflowDetail(props: WorkflowDetailProps) {
+  console.log("WorkflowDetail printed props", props);
   const dispatch = useAppDispatch();
   const dataSourceEnabled = getDataSourceEnabled().enabled;
   const dataSourceId = getDataSourceId();

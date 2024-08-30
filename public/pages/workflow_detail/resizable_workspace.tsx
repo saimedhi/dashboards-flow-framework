@@ -49,7 +49,7 @@ const TOOLS_PANEL_ID = 'tools_panel_id';
  */
 export function ResizableWorkspace(props: ResizableWorkspaceProps) {
 
-  console.log("ResizableWorkspace props printed", props)
+  console.log("ResizableWorkspace props printed", props);
   // Workflow state
   const [workflow, setWorkflow] = useState<Workflow | undefined>(
     props.workflow
