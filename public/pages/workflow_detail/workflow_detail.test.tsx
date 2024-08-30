@@ -1,23 +1,30 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { WorkflowDetail } from './WorkflowDetail';
+import { WorkflowDetail } from './workflow_detail';
+import { store } from '../../store';
 import { RouteComponentProps } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+// import configureStore from 'redux-mock-store';
 
-const mockStore = configureStore([]);
-const store = mockStore({
-  workflows: {
-    workflows: {
-      'some-workflow-id': {
-        id: 'some-workflow-id',
-        name: 'Test Workflow',
-      },
-    },
-    errorMessage: '',
-  },
+// const mockStore = configureStore([]);
+// const store = mockStore({
+//   workflows: {
+//     workflows: {
+//       'some-workflow-id': {
+//         id: 'some-workflow-id',
+//         name: 'Test Workflow',
+//       },
+//     },
+//     errorMessage: '',
+//   },
+// });
+jest.mock('../../services', () => {
+  const { mockCoreServices } = require('../../../test');
+  return {
+    ...jest.requireActual('../../services'),
+    ...mockCoreServices,
+  };
 });
-
 const mockSetActionMenu = jest.fn();
 
 const mockProps: RouteComponentProps<{
