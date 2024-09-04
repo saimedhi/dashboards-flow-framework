@@ -61,6 +61,7 @@ interface WorkflowDetailProps
  */
 
 export function WorkflowDetail(props: WorkflowDetailProps) {
+  console.log('WorkflowDetail printed props', props);
   const dispatch = useAppDispatch();
   const dataSourceEnabled = getDataSourceEnabled().enabled;
   const dataSourceId = getDataSourceId();
@@ -71,6 +72,7 @@ export function WorkflowDetail(props: WorkflowDetailProps) {
   // selected workflow state
   const workflowId = escape(props.match?.params?.workflowId);
   const workflow = workflows[workflowId];
+  console.log('workflow printed ######', workflow);
   const workflowName = getCharacterLimitedString(
     workflow?.name || '',
     MAX_WORKFLOW_NAME_TO_DISPLAY

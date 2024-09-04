@@ -58,7 +58,7 @@ export function Workspace(props: WorkspaceProps) {
   // JSON state
   const [provisionTemplate, setProvisionTemplate] = useState<string>('');
   useEffect(() => {
-    if (props.workflow?.workflows.provision) {
+    if (props.workflow?.workflows?.provision) {
       const templateAsObj = props.workflow?.workflows.provision as {};
       const templateAsStr = JSON.stringify(templateAsObj, undefined, 2);
       setProvisionTemplate(templateAsStr);

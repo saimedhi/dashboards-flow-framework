@@ -4,7 +4,6 @@
  */
 
 import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -48,6 +47,7 @@ const TOOLS_PANEL_ID = 'tools_panel_id';
  * panels - the ReactFlow workspace panel and the selected component details panel.
  */
 export function ResizableWorkspace(props: ResizableWorkspaceProps) {
+  console.log('ResizableWorkspace props printed', props);
   // Workflow state
   const [workflow, setWorkflow] = useState<Workflow | undefined>(
     props.workflow
@@ -104,9 +104,11 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
 
   // Hook to check if the workflow is valid or not
   useEffect(() => {
+    console.log('@@@@@@@@@@props.workflow', JSON.stringify(props.workflow));
     const missingUiFlow = props.workflow && !isValidUiWorkflow(props.workflow);
     if (missingUiFlow) {
       setIsValidWorkflow(false);
+      console.log('printed IsValidWorkflow', isValidWorkflow);
     } else {
       setWorkflow(props.workflow);
     }
@@ -129,170 +131,202 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
     }
   }, [uiConfig]);
 
+  console.log('Rendered WorkflowDetail component with props:', props);
+
+  console.log('Checking if workflow is valid:', isValidWorkflow);
   return isValidWorkflow ? (
     <Formik
       enableReinitialize={true}
       initialValues={formValues}
       validationSchema={formSchema}
-      onSubmit={(values) => {}}
-      validate={(values) => {}}
+      onSubmit={(values) => {
+        console.log('Formik onSubmit called with values:', values);
+      }}
+      validate={(values) => {
+        console.log('Formik validate called with values:', values);
+      }}
     >
-      {(formikProps) => (
-        <Form>
-          <EuiResizableContainer
-            direction="horizontal"
-            className="stretch-absolute"
-            style={{
-              marginLeft: isWorkflowInputsPanelOpen ? '-8px' : '0px',
-              marginTop: '-8px',
-            }}
-          >
-            {(EuiResizablePanel, EuiResizableButton, { togglePanel }) => {
-              if (togglePanel) {
-                collapseFnHorizontal.current = (
-                  panelId: string,
-                  { direction }
-                ) => togglePanel(panelId, { direction });
-              }
+      {(formikProps) => {
+        console.log('Formik props:', formikProps);
+        return (
+          <Form>
+            <EuiResizableContainer
+              direction="horizontal"
+              className="stretch-absolute"
+              style={{
+                marginLeft: isWorkflowInputsPanelOpen ? '-8px' : '0px',
+                marginTop: '-8px',
+              }}
+            >
+              {(EuiResizablePanel, EuiResizableButton, { togglePanel }) => {
+                console.log('Horizontal EuiResizableContainer rendered');
+                if (togglePanel) {
+                  collapseFnHorizontal.current = (
+                    panelId: string,
+                    { direction }
+                  ) => {
+                    console.log(
+                      'Toggling horizontal panel:',
+                      panelId,
+                      direction
+                    );
+                    togglePanel(panelId, { direction });
+                  };
+                }
 
-              return (
-                <>
-                  <EuiResizablePanel
-                    id={WORKFLOW_INPUTS_PANEL_ID}
-                    mode="collapsible"
-                    initialSize={50}
-                    minSize="25%"
-                    paddingSize="s"
-                    onToggleCollapsedInternal={() =>
-                      onToggleWorkflowInputsChange()
-                    }
-                  >
-                    <WorkflowInputs
-                      workflow={props.workflow}
-                      uiConfig={uiConfig}
-                      setUiConfig={setUiConfig}
-                      setIngestResponse={setIngestResponse}
-                      setQueryResponse={setQueryResponse}
-                      ingestDocs={ingestDocs}
-                      setIngestDocs={setIngestDocs}
-                      query={query}
-                      setQuery={setQuery}
-                    />
-                  </EuiResizablePanel>
-                  <EuiResizableButton />
-                  <EuiResizablePanel
-                    style={{
-                      marginRight: '-32px',
-                      marginBottom: isToolsPanelOpen ? '0px' : '24px',
-                    }}
-                    mode="main"
-                    initialSize={60}
-                    minSize="25%"
-                    paddingSize="s"
-                  >
-                    <EuiResizableContainer
-                      className="workspace-panel"
-                      direction="vertical"
-                      style={{
-                        marginLeft: '-8px',
-                        marginTop: '-8px',
-                        padding: 'none',
+                return (
+                  <>
+                    <EuiResizablePanel
+                      id={WORKFLOW_INPUTS_PANEL_ID}
+                      mode="collapsible"
+                      initialSize={50}
+                      minSize="25%"
+                      paddingSize="s"
+                      onToggleCollapsedInternal={() => {
+                        console.log('WorkflowInputs panel toggled');
+                        onToggleWorkflowInputsChange();
                       }}
                     >
-                      {(
-                        EuiResizablePanel,
-                        EuiResizableButton,
-                        { togglePanel }
-                      ) => {
-                        if (togglePanel) {
-                          collapseFnVertical.current = (
-                            panelId: string,
-                            { direction }
-                          ) =>
-                            // ignore is added since docs are incorrectly missing "top" and "bottom"
-                            // as valid direction options for vertically-configured resizable panels.
-                            // @ts-ignore
-                            togglePanel(panelId, { direction });
-                        }
-
-                        return (
-                          <>
-                            <EuiResizablePanel
-                              mode="main"
-                              initialSize={60}
-                              minSize="25%"
-                              paddingSize="s"
-                              style={{ marginBottom: '-8px' }}
-                            >
-                              <EuiFlexGroup
-                                direction="column"
-                                gutterSize="s"
-                                style={{ height: '100%' }}
-                              >
-                                <EuiFlexItem>
-                                  <Workspace
-                                    workflow={props.workflow}
-                                    uiConfig={uiConfig}
-                                  />
-                                </EuiFlexItem>
-                              </EuiFlexGroup>
-                            </EuiResizablePanel>
-                            <EuiResizableButton />
-                            <EuiResizablePanel
-                              id={TOOLS_PANEL_ID}
-                              mode="collapsible"
-                              initialSize={50}
-                              minSize="25%"
-                              paddingSize="s"
-                              onToggleCollapsedInternal={() =>
-                                onToggleToolsChange()
-                              }
-                              style={{ marginBottom: '-16px' }}
-                            >
-                              <Tools
-                                workflow={workflow}
-                                ingestResponse={ingestResponse}
-                                queryResponse={queryResponse}
-                              />
-                            </EuiResizablePanel>
-                          </>
-                        );
+                      <WorkflowInputs
+                        workflow={props.workflow}
+                        uiConfig={uiConfig}
+                        setUiConfig={setUiConfig}
+                        setIngestResponse={setIngestResponse}
+                        setQueryResponse={setQueryResponse}
+                        ingestDocs={ingestDocs}
+                        setIngestDocs={setIngestDocs}
+                        query={query}
+                        setQuery={setQuery}
+                      />
+                    </EuiResizablePanel>
+                    <EuiResizableButton />
+                    <EuiResizablePanel
+                      style={{
+                        marginRight: '-32px',
+                        marginBottom: isToolsPanelOpen ? '0px' : '24px',
                       }}
-                    </EuiResizableContainer>
-                  </EuiResizablePanel>
-                </>
-              );
-            }}
-          </EuiResizableContainer>
-        </Form>
-      )}
+                      mode="main"
+                      initialSize={60}
+                      minSize="25%"
+                      paddingSize="s"
+                    >
+                      <EuiResizableContainer
+                        className="workspace-panel"
+                        direction="vertical"
+                        style={{
+                          marginLeft: '-8px',
+                          marginTop: '-8px',
+                          padding: 'none',
+                        }}
+                      >
+                        {(
+                          EuiResizablePanel,
+                          EuiResizableButton,
+                          { togglePanel }
+                        ) => {
+                          console.log(
+                            'Vertical EuiResizableContainer rendered'
+                          );
+                          if (togglePanel) {
+                            collapseFnVertical.current = (
+                              panelId: string,
+                              { direction }
+                            ) => {
+                              console.log(
+                                'Toggling vertical panel:',
+                                panelId,
+                                direction
+                              );
+                              // ignore is added since docs are incorrectly missing "top" and "bottom"
+                              // as valid direction options for vertically-configured resizable panels.
+                              // @ts-ignore
+                              togglePanel(panelId, { direction });
+                            };
+                          }
+
+                          return (
+                            <>
+                              <EuiResizablePanel
+                                mode="main"
+                                initialSize={60}
+                                minSize="25%"
+                                paddingSize="s"
+                                style={{ marginBottom: '-8px' }}
+                              >
+                                <EuiFlexGroup
+                                  direction="column"
+                                  gutterSize="s"
+                                  style={{ height: '100%' }}
+                                >
+                                  <EuiFlexItem>
+                                    <Workspace
+                                      workflow={props.workflow}
+                                      uiConfig={uiConfig}
+                                    />
+                                  </EuiFlexItem>
+                                </EuiFlexGroup>
+                              </EuiResizablePanel>
+                              <EuiResizableButton />
+                              <EuiResizablePanel
+                                id={TOOLS_PANEL_ID}
+                                mode="collapsible"
+                                initialSize={50}
+                                minSize="25%"
+                                paddingSize="s"
+                                onToggleCollapsedInternal={() => {
+                                  console.log('Tools panel toggled');
+                                  onToggleToolsChange();
+                                }}
+                                style={{ marginBottom: '-16px' }}
+                              >
+                                <Tools
+                                  workflow={workflow}
+                                  ingestResponse={ingestResponse}
+                                  queryResponse={queryResponse}
+                                />
+                              </EuiResizablePanel>
+                            </>
+                          );
+                        }}
+                      </EuiResizableContainer>
+                    </EuiResizablePanel>
+                  </>
+                );
+              }}
+            </EuiResizableContainer>
+          </Form>
+        );
+      }}
     </Formik>
   ) : (
-    <EuiFlexGroup direction="column">
-      <EuiFlexItem grow={3}>
-        <EuiEmptyPrompt
-          iconType={'cross'}
-          title={<h2>Unable to view workflow details</h2>}
-          titleSize="s"
-          body={
-            <>
-              <EuiText>
-                Only valid workflows created from this OpenSearch Dashboards
-                application are editable and viewable.
-              </EuiText>
-            </>
-          }
-        />
-      </EuiFlexItem>
-      <EuiFlexItem grow={7}>
-        <EuiCodeBlock language="json" fontSize="m" isCopyable={false}>
-          {JSON.stringify(
-            reduceToTemplate(props.workflow as Workflow),
-            undefined,
-            2
-          )}
-        </EuiCodeBlock>
-      </EuiFlexItem>
-    </EuiFlexGroup>
+    <>
+      console.log('Workflow is not valid, rendering empty prompt');
+      <EuiFlexGroup direction="column">
+        <EuiFlexItem grow={3}>
+          <EuiEmptyPrompt
+            iconType={'cross'}
+            title={<h2>Unable to view workflow details</h2>}
+            titleSize="s"
+            body={
+              <>
+                <EuiText>
+                  Only valid workflows created from this OpenSearch Dashboards
+                  application are editable and viewable.
+                </EuiText>
+              </>
+            }
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={7}>
+          <EuiCodeBlock language="json" fontSize="m" isCopyable={false}>
+            {JSON.stringify(
+              reduceToTemplate(props.workflow as Workflow),
+              undefined,
+              2
+            )}
+          </EuiCodeBlock>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    </>
   );
 }
