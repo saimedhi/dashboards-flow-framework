@@ -580,6 +580,7 @@ export class FlowFrameworkRoutesService {
     req: OpenSearchDashboardsRequest,
     res: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<any>> => {
+    console.log('---------------4----------------');
     try {
       // In the future we may get these from backend via some API. For now we can
       // persist a set of working presets on server-side.

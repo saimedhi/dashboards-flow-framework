@@ -19,8 +19,9 @@ import {
 
 export const columns = (actions: any[]) => {
   const dataSourceId = getDataSourceId();
+  console.log("dataSourceId", dataSourceId);
 
-  return [
+  const columns_printed= [
     {
       field: 'name',
       name: 'Name',
@@ -59,4 +60,8 @@ export const columns = (actions: any[]) => {
       actions,
     },
   ];
+
+  console.log("columns_printed", columns_printed);
+
+  return columns_printed;
 };

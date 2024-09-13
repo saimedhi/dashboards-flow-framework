@@ -253,6 +253,8 @@ export function configureRoutes(core: CoreStart): RouteService {
       }
     },
     getWorkflowPresets: async () => {
+      console.log('---------------5----------------');
+
       try {
         const response = await core.http.get<{ respString: string }>(
           GET_PRESET_WORKFLOWS_NODE_API_PATH

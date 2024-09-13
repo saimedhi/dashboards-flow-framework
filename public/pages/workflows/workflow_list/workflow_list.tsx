@@ -60,6 +60,10 @@ export function WorkflowList(props: WorkflowListProps) {
     (state: AppState) => state.workflows
   );
 
+
+  console.log('loading printed', loading);
+  console.log('workflows printed', JSON.stringify(workflows));
+
   // actions state
   const [selectedWorkflow, setSelectedWorkflow] = useState<
     Workflow | undefined
@@ -89,6 +93,8 @@ export function WorkflowList(props: WorkflowListProps) {
   );
   const [filteredWorkflows, setFilteredWorkflows] = useState<Workflow[]>([]);
 
+  console.log('filteredWorkflows printed', filteredWorkflows);
+
   // When any filter changes or new workflows are found, update the list
   useEffect(() => {
     setFilteredWorkflows(
@@ -98,7 +104,7 @@ export function WorkflowList(props: WorkflowListProps) {
         searchQuery
       )
     );
-  }, [selectedTypes, searchQuery, workflows]);
+  }, [selectedTypes, searchQuery]);
 
   const tableActions = [
     {
@@ -125,7 +131,7 @@ export function WorkflowList(props: WorkflowListProps) {
     },
   ];
 
-  return (
+  const abc = (
     <>
       {isDeleteModalOpen && selectedWorkflow?.id !== undefined && (
         <DeleteWorkflowModal
@@ -191,6 +197,9 @@ export function WorkflowList(props: WorkflowListProps) {
       </EuiFlexGroup>
     </>
   );
+  //console.log('abc', abc);
+
+  return abc;
 }
 
 // Collect the final workflow list after applying all filters
@@ -199,6 +208,7 @@ function fetchFilteredWorkflows(
   typeFilters: EuiFilterSelectItem[],
   searchQuery: string
 ): Workflow[] {
+  //console.log('allWorkflows printed', allWorkflows);
   // If missing/invalid ui metadata, add defaults
   const allWorkflowsWithDefaults = allWorkflows.map((workflow) => ({
     ...workflow,
@@ -212,9 +222,14 @@ function fetchFilteredWorkflows(
   const filteredWorkflows = allWorkflowsWithDefaults.filter((workflow) =>
     typeFilterStrings.includes(workflow.ui_metadata?.type)
   );
-  return searchQuery.length === 0
+  
+  const abcde = searchQuery.length === 0
     ? filteredWorkflows
     : filteredWorkflows.filter((workflow) =>
         workflow.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+  
+      console.log("abcde", abcde);
+
+  return abcde;
 }
