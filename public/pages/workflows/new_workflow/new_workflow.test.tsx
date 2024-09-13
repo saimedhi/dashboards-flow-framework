@@ -19,6 +19,14 @@ jest.mock('../../../services', () => {
   };
 });
 
+jest.mock('../../../route_service', () => {
+  const { mockRouteService } = require('../../../../test');
+  return {
+    ...jest.requireActual('../../../route_service'),
+    ...mockRouteService,
+  };
+});
+
 const renderWithRouter = () =>
   render(
     <Provider store={store}>
@@ -32,7 +40,8 @@ const renderWithRouter = () =>
 
 describe('NewWorkflow', () => {
   test('renders the search bar', () => {
-    const { getByPlaceholderText } = renderWithRouter();
+    const { getByPlaceholderText, getAllByText } = renderWithRouter();
+    expect(getAllByText('Create from a template')).toBeInTheDocument();
     expect(getByPlaceholderText('Search')).toBeInTheDocument();
   });
 });

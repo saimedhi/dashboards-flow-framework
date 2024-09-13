@@ -30,11 +30,81 @@ export function mockStore(
       workflows: {
         ...INITIAL_WORKFLOWS_STATE,
         workflows: {
-          [workflowId]: generateWorkflow(
-            workflowId,
-            workflowName,
-            workflowType
-          ),
+          '1ECGC5EBUkBYAWA_XOrF': {
+            id: '1ECGC5EBUkBYAWA_XOrF',
+            name: 'semantic_search',
+            use_case: '',
+            description:
+              'A basic workflow containing the ingest pipeline and index configurations for performing semantic search',
+            version: {
+              template: '1.0.0',
+              compatibility: ['2.13.0', '3.0.0'],
+            },
+            workflows: {},
+            ui_metadata: {
+              type: 'Semantic search',
+              config: {
+                search: {
+                  request: {
+                    id: 'request',
+                    type: 'json',
+                    value:
+                      '{\n  "query": {\n    "match_all": {}\n  },\n  "size": 1000\n}',
+                  },
+                  enrichRequest: {
+                    processors: [],
+                  },
+                  enrichResponse: {
+                    processors: [],
+                  },
+                },
+                ingest: {
+                  enrich: {
+                    processors: [
+                      {
+                        name: 'ML Inference Processor',
+                        id: 'ml_processor_ingest_d5478e92935a5e9a',
+                        fields: [
+                          {
+                            id: 'model',
+                            type: 'model',
+                          },
+                          {
+                            id: 'inputMap',
+                            type: 'mapArray',
+                          },
+                          {
+                            id: 'outputMap',
+                            type: 'mapArray',
+                          },
+                        ],
+                        type: 'ml_processor',
+                      },
+                    ],
+                  },
+                  index: {
+                    settings: {
+                      id: 'indexSettings',
+                      type: 'json',
+                    },
+                    mappings: {
+                      id: 'indexMappings',
+                      type: 'json',
+                    },
+                    name: {
+                      id: 'indexName',
+                      type: 'string',
+                    },
+                  },
+                  source: {},
+                  enabled: true,
+                },
+              },
+            },
+            lastUpdated: 1722475240633,
+            state: 'Started',
+            resourcesCreated: [],
+          },
         },
       },
       presets: INITIAL_PRESETS_STATE,

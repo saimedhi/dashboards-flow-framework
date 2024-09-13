@@ -23,11 +23,14 @@ export const getWorkflowPresets = createAsyncThunk(
     const response:
       | any
       | HttpFetchError = await getRouteService().getWorkflowPresets();
+    console.log('---------------3----------------');
     if (response instanceof HttpFetchError) {
+      console.log('---------------ERROR----------------');
       return rejectWithValue(
         'Error getting workflow presets: ' + response.body.message
       );
     } else {
+      console.log('----------------RESPONSE---------------');
       return response;
     }
   }

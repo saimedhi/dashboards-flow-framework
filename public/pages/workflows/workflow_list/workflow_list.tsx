@@ -60,6 +60,8 @@ export function WorkflowList(props: WorkflowListProps) {
     (state: AppState) => state.workflows
   );
 
+  console.log('workflows printed', JSON.stringify(workflows));
+
   // actions state
   const [selectedWorkflow, setSelectedWorkflow] = useState<
     Workflow | undefined
@@ -98,7 +100,7 @@ export function WorkflowList(props: WorkflowListProps) {
         searchQuery
       )
     );
-  }, [selectedTypes, searchQuery, workflows]);
+  }, [selectedTypes, searchQuery]);
 
   const tableActions = [
     {
@@ -125,7 +127,7 @@ export function WorkflowList(props: WorkflowListProps) {
     },
   ];
 
-  return (
+  const abc = (
     <>
       {isDeleteModalOpen && selectedWorkflow?.id !== undefined && (
         <DeleteWorkflowModal
@@ -191,6 +193,9 @@ export function WorkflowList(props: WorkflowListProps) {
       </EuiFlexGroup>
     </>
   );
+  //console.log('abc', abc);
+
+  return abc;
 }
 
 // Collect the final workflow list after applying all filters
@@ -199,6 +204,7 @@ function fetchFilteredWorkflows(
   typeFilters: EuiFilterSelectItem[],
   searchQuery: string
 ): Workflow[] {
+  //console.log('allWorkflows printed', allWorkflows);
   // If missing/invalid ui metadata, add defaults
   const allWorkflowsWithDefaults = allWorkflows.map((workflow) => ({
     ...workflow,
