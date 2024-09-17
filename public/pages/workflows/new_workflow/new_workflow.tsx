@@ -61,7 +61,6 @@ export function NewWorkflow(props: NewWorkflowProps) {
   // 2. fetch the ML models and connectors. these may be used in quick-create views when selecting a preset,
   //    so we optimize by fetching once at the top-level here.
   useEffect(() => {
-    console.log('---------------1----------------');
     dispatch(getWorkflowPresets());
     dispatch(searchModels({ apiBody: FETCH_ALL_QUERY, dataSourceId }));
     dispatch(searchConnectors({ apiBody: FETCH_ALL_QUERY, dataSourceId }));

@@ -4,12 +4,14 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { store } from '../../../store';
+import { mockStore } from '../../../../test/utils';
 import { NewWorkflow } from './new_workflow';
+import { WORKFLOW_TYPE } from '../../../../common/constants';
+import { render, waitFor } from '@testing-library/react';
+//import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../services', () => {
   const { mockCoreServices } = require('../../../../test');
@@ -18,18 +20,32 @@ jest.mock('../../../services', () => {
     ...mockCoreServices,
   };
 });
+const mockDispatch = jest.fn();
 
-jest.mock('../../../public/route_service', () => {
-  const { mockRouteService } = require('../../../../test');
-  return {
-    ...jest.requireActual('../../../route_service'),
-    ...mockRouteService,
-  };
-});
+jest.mock('../../../../public/store', () => ({
+  ...jest.requireActual('../../../../public/store'),
+  useAppDispatch: () => mockDispatch,
+}));
 
-const renderWithRouter = () =>
+// jest.mock('../../../../public/store/reducers', () => {
+//   const { mockReducers } = require('../../../../test');
+//   return {
+//     ...jest.requireActual('../../../../public/store/reducers'),
+//     ...mockReducers,
+//   };
+// });
+
+const workflowId = '12345';
+const workflowName = 'test_workflow';
+const workflowType = WORKFLOW_TYPE.SEMANTIC_SEARCH;
+
+const renderWithRouter = (
+  workflowId: string,
+  workflowName: string,
+  workflowType: WORKFLOW_TYPE
+) =>
   render(
-    <Provider store={store}>
+    <Provider store={mockStore([workflowId, workflowName, workflowType])}>
       <Router>
         <Switch>
           <Route render={() => <NewWorkflow />} />
@@ -40,8 +56,21 @@ const renderWithRouter = () =>
 
 describe('NewWorkflow', () => {
   test('renders the search bar', () => {
-    const { getByPlaceholderText, getAllByText} = renderWithRouter();
-    expect(getAllByText('Create from a template')).toBeInTheDocument();
+    const { getByPlaceholderText, getAllByText } = renderWithRouter(
+      workflowId,
+      workflowName,
+      workflowType
+    );
     expect(getByPlaceholderText('Search')).toBeInTheDocument();
+    expect(getAllByText('Create from a template')).toBeInTheDocument();
+
+    // const usecaseCard = getByTestId('usecase-card-Hybrid Search');
+    // const goButton = usecaseCard.querySelector('button');
+
+    // // Ensure the button exists
+    // expect(goButton).toBeInTheDocument();
+
+    // // Simulate a click on the "Go" button
+    // await waitFor(() => userEvent.click(goButton!));
   });
 });

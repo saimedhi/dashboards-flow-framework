@@ -60,9 +60,8 @@ export function WorkflowList(props: WorkflowListProps) {
     (state: AppState) => state.workflows
   );
 
-
-  console.log('loading printed', loading);
-  console.log('workflows printed', JSON.stringify(workflows));
+  // console.log('loading printed', loading);
+  // console.log('workflows printed', JSON.stringify(workflows));
 
   // actions state
   const [selectedWorkflow, setSelectedWorkflow] = useState<
@@ -93,7 +92,7 @@ export function WorkflowList(props: WorkflowListProps) {
   );
   const [filteredWorkflows, setFilteredWorkflows] = useState<Workflow[]>([]);
 
-  console.log('filteredWorkflows printed', filteredWorkflows);
+  // console.log('filteredWorkflows printed', filteredWorkflows);
 
   // When any filter changes or new workflows are found, update the list
   useEffect(() => {
@@ -197,7 +196,7 @@ export function WorkflowList(props: WorkflowListProps) {
       </EuiFlexGroup>
     </>
   );
-  //console.log('abc', abc);
+  console.log('#########abc', filteredWorkflows);
 
   return abc;
 }
@@ -222,14 +221,15 @@ function fetchFilteredWorkflows(
   const filteredWorkflows = allWorkflowsWithDefaults.filter((workflow) =>
     typeFilterStrings.includes(workflow.ui_metadata?.type)
   );
-  
-  const abcde = searchQuery.length === 0
-    ? filteredWorkflows
-    : filteredWorkflows.filter((workflow) =>
-        workflow.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-  
-      console.log("abcde", abcde);
+
+  const abcde =
+    searchQuery.length === 0
+      ? filteredWorkflows
+      : filteredWorkflows.filter((workflow) =>
+          workflow.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+  // console.log('abcde', abcde);
 
   return abcde;
 }

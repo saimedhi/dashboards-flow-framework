@@ -41,6 +41,7 @@ export function UseCase(props: UseCaseProps) {
         titleSize="s"
         paddingSize="l"
         layout="horizontal"
+        data-testid={`usecase-card-${props.workflow.name}`}
       >
         <EuiFlexGroup direction="column" gutterSize="l">
           <EuiHorizontalRule size="full" margin="m" />
