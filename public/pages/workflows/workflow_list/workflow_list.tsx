@@ -98,7 +98,7 @@ export function WorkflowList(props: WorkflowListProps) {
         searchQuery
       )
     );
-  }, [selectedTypes, searchQuery, workflows]);
+  }, [selectedTypes, searchQuery]);
 
   const tableActions = [
     {
