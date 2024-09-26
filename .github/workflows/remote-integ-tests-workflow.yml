@@ -29,7 +29,7 @@ jobs:
       - name: Checkout Flow-Framework
         uses: actions/checkout@v2
         with:
-          path: anomaly-detection
+          path: flow-framework
           repository: opensearch-project/flow-framework
           ref: '${{ github.base_ref }}'
       
@@ -87,7 +87,7 @@ jobs:
       - name: Boodstrap Opensearch Dashboards
         run: |
           yarn osd bootstrap --single-version=loose
-        working-directory: OpenSearch-Dashboards/plugins/anomaly-detection-dashboards-plugin
+        working-directory: OpenSearch-Dashboards/plugins/dashboards-flow-framework
       
       - name: Run Opensearch Dashboards with FF Installed
         run: |
