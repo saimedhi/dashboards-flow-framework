@@ -88,6 +88,8 @@ export function NewWorkflow(props: NewWorkflowProps) {
     setFilteredWorkflows(fetchFilteredWorkflows(allWorkflows, searchQuery));
   }, [searchQuery]);
 
+  console.log('Printed Entered new workflow 2222222');
+
   return (
     <EuiFlexGroup direction="column">
       <EuiFlexItem grow={true}>
