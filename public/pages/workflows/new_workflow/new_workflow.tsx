@@ -37,6 +37,7 @@ interface NewWorkflowProps {}
  * workflow for users to start with.
  */
 export function NewWorkflow(props: NewWorkflowProps) {
+  console.log('Printed Entered new workflow');
   const dispatch = useAppDispatch();
   const dataSourceId = getDataSourceId();
 
