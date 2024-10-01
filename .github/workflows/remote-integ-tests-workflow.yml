@@ -92,6 +92,7 @@ jobs:
       - name: Run Opensearch Dashboards with FF Installed
         run: |
           nohup yarn start --no-base-path --no-watch --server.host="0.0.0.0" | tee dashboard.log &
+          sleep 60
         working-directory: OpenSearch-Dashboards
 
       - name : Check If OpenSearch Dashboards Is Ready
