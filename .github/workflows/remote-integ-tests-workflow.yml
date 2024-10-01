@@ -97,7 +97,7 @@ jobs:
       - name : Check If OpenSearch Dashboards Is Ready
         if: ${{ runner.os == 'Linux' }}
         run: |
-          if timeout 600 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
+          if timeout 1000 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
             echo "OpenSearch Dashboards compiled successfully."
           else
             echo "Timeout for 600 seconds reached. OpenSearch Dashboards did not finish compiling."
