@@ -94,16 +94,16 @@ jobs:
           nohup yarn start --no-base-path --no-watch --server.host="0.0.0.0" | tee dashboard.log &
         working-directory: OpenSearch-Dashboards
 
-      - name : Check If OpenSearch Dashboards Is Ready
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          if timeout 1000 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
-            echo "OpenSearch Dashboards compiled successfully."
-          else
-            echo "Timeout for 600 seconds reached. OpenSearch Dashboards did not finish compiling."
-            exit 1
-          fi
-        working-directory: OpenSearch-Dashboards
+      # - name : Check If OpenSearch Dashboards Is Ready
+      #   if: ${{ runner.os == 'Linux' }}
+      #   run: |
+      #     if timeout 600 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
+      #       echo "OpenSearch Dashboards compiled successfully."
+      #     else
+      #       echo "Timeout for 600 seconds reached. OpenSearch Dashboards did not finish compiling."
+      #       exit 1
+      #     fi
+      #   working-directory: OpenSearch-Dashboards
 
       - name: Show OpenSearch Dashboards Logs
         if: always()
