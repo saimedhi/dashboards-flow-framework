@@ -159,6 +159,7 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
             id="optionalConfiguration"
             buttonContent="Optional configuration"
             initialIsOpen={false}
+            data-testid="optionalConfigurationButton"
           >
             <EuiSpacer size="m" />
             <EuiCompressedFormRow
