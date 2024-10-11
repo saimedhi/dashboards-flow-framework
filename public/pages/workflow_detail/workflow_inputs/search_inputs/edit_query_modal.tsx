@@ -45,13 +45,14 @@ export function EditQueryModal(props: EditQueryModalProps) {
     <EuiModal
       onClose={() => props.setModalOpen(false)}
       style={{ width: '70vw' }}
+      data-testid="editQueryModal"
     >
       <EuiModalHeader>
-        <EuiModalHeaderTitle>
+        <EuiModalHeaderTitle data-testid="editQueryModalTitle">
           <p>{`Edit query`}</p>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
-      <EuiModalBody>
+      <EuiModalBody data-testid="editQueryModalBody">
         <EuiPopover
           button={
             <EuiSmallButton
@@ -64,6 +65,7 @@ export function EditQueryModal(props: EditQueryModalProps) {
           isOpen={popoverOpen}
           closePopover={() => setPopoverOpen(false)}
           anchorPosition="downLeft"
+          data-testid="presetQueryPopover"
         >
           <EuiContextMenu
             initialPanelId={0}
@@ -77,9 +79,11 @@ export function EditQueryModal(props: EditQueryModalProps) {
                     setFieldTouched(props.queryFieldPath, true);
                     setPopoverOpen(false);
                   },
+                  'data-testid': `presetQueryOption-${preset.name}`, // Add a data-testid to each preset option
                 })),
               },
             ]}
+            data-testid="presetQueryMenu"
           />
         </EuiPopover>
         <EuiSpacer size="s" />
@@ -88,6 +92,7 @@ export function EditQueryModal(props: EditQueryModalProps) {
           fieldPath={props.queryFieldPath}
           editorHeight="25vh"
           readOnly={false}
+          data-testid="jsonQueryField" // Add data-testid for the JSON query input field
         />
       </EuiModalBody>
       <EuiModalFooter>
