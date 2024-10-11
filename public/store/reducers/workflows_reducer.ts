@@ -164,6 +164,7 @@ export const provisionWorkflow = createAsyncThunk(
         'Error provisioning workflow: ' + response.body.message
       );
     } else {
+      console.log('provisionWorkflow response', response);
       return response;
     }
   }
