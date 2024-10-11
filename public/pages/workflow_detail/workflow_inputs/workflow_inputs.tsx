@@ -317,6 +317,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
         config: formikToUiConfig(values, props.uiConfig as WorkflowConfig),
       },
     } as WorkflowTemplate;
+
     await dispatch(
       updateWorkflow({
         apiBody: {
@@ -371,10 +372,13 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
     updatedWorkflow: Workflow,
     reprovision: boolean
   ): Promise<boolean> {
+    console.log('updatedWorkflow', updatedWorkflow);
+    console.log('reprovision', reprovision);
     let success = false;
     if (!ingestTemplatesDifferent && !searchTemplatesDifferent) {
       success = await updateWorkflowUiConfig();
     } else if (reprovision) {
+      console.log('44444444444');
       await dispatch(
         updateWorkflow({
           apiBody: {
@@ -406,6 +410,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
           }, 1000);
         })
         .catch((error: any) => {
+          console.log('55555555555');
           console.error('Error reprovisioning workflow: ', error);
         });
     } else {
@@ -420,6 +425,13 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
       )
         .unwrap()
         .then(async (result) => {
+          console.log('$$$$updatedWorkflow', JSON.stringify(updatedWorkflow));
+          console.log(
+            'reduceToTemplate(updatedWorkflow)',
+            JSON.stringify(reduceToTemplate(updatedWorkflow))
+          );
+          console.log('dataSourceId', dataSourceId);
+
           await dispatch(
             updateWorkflow({
               apiBody: {
@@ -460,14 +472,17 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
                   }, 1000);
                 })
                 .catch((error: any) => {
+                  console.log('666666666666');
                   console.error('Error provisioning updated workflow: ', error);
                 });
             })
             .catch((error: any) => {
+              console.log('777777777777');
               console.error('Error updating workflow: ', error);
             });
         })
         .catch((error: any) => {
+          console.log('888888888888');
           console.error('Error deprovisioning workflow: ', error);
         });
     }
@@ -488,6 +503,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
     // open issues for that - see https://github.com/jaredpalmer/formik/issues/2057
     // The workaround is to additionally execute validateForm() which will return any errors found.
     submitForm();
+    console.log('1414141414');
     await validateForm()
       .then(async (validationResults: { ingest?: {}; search?: {} }) => {
         const { ingest, search } = validationResults;
@@ -504,6 +520,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
             values,
             props.uiConfig as WorkflowConfig
           );
+          console.log('1616161616');
           const updatedWorkflow = {
             ...props.workflow,
             ui_metadata: {
@@ -512,6 +529,14 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
             },
             workflows: configToTemplateFlows(updatedConfig),
           } as Workflow;
+
+          console.log(
+            '........updatedWorkflow',
+            updatedWorkflow,
+            'reprovision',
+            reprovision,
+            '........'
+          );
           success = await updateWorkflowAndResources(
             updatedWorkflow,
             reprovision
@@ -531,34 +556,41 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
   async function validateAndRunIngestion(): Promise<boolean> {
     setIsRunningIngest(true);
     let success = false;
+    console.log('13131313');
     try {
       let ingestDocsObjs = [] as {}[];
       try {
         ingestDocsObjs = JSON.parse(props.ingestDocs);
       } catch (e) {}
+      console.log('121212121212');
       if (ingestDocsObjs.length > 0 && !isEmpty(ingestDocsObjs[0])) {
         success = await validateAndUpdateWorkflow(false, true, false);
+        console.log('10101010');
         if (success) {
           const bulkBody = prepareBulkBody(
             values.ingest.index.name,
             ingestDocsObjs
           );
+          console.log('log 33333333');
           dispatch(bulk({ apiBody: { body: bulkBody }, dataSourceId }))
             .unwrap()
             .then(async (resp) => {
               props.setIngestResponse(customStringify(resp));
             })
             .catch((error: any) => {
+              console.log('log 111111');
               props.setIngestResponse('');
               throw error;
             });
         }
       } else {
+        console.log('1313131313');
         getCore().notifications.toasts.addDanger(
           'No valid document(s) provided. Ensure it is a valid JSON array.'
         );
       }
     } catch (error) {
+      console.log('log 22222');
       console.error('Error ingesting documents: ', error);
     }
     setIsRunningIngest(false);
@@ -582,8 +614,10 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
       } catch (e) {}
       if (!isEmpty(queryObj)) {
         if (hasProvisionedIngestResources(props.workflow)) {
+          console.log('88888888888');
           success = await validateAndUpdateWorkflow(true, false, true);
         } else {
+          console.log('9999999999999');
           success = await validateAndUpdateWorkflow(false, false, true);
         }
 
