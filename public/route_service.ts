@@ -307,9 +307,12 @@ export function configureRoutes(core: CoreStart): RouteService {
         const path = searchPipeline
           ? `${basePath}/${searchPipeline}`
           : basePath;
+        console.log("serach index path:",path);
+        console.log("search index body:",body);
         const response = await core.http.post<{ respString: string }>(path, {
           body: JSON.stringify(body),
         });
+        console.log("search index resp:",response);
         return response;
       } catch (e: any) {
         return e as HttpFetchError;

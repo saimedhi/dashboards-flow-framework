@@ -623,6 +623,9 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
 
         if (success) {
           const indexName = values.search.index.name;
+          console.log("searchIndex before indexName", indexName);
+          console.log("searchIndex before props.query", props.query);
+          console.log("searchIndex before dataSourceId", dataSourceId);
           dispatch(
             searchIndex({
               apiBody: { index: indexName, body: props.query },
@@ -631,6 +634,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
           )
             .unwrap()
             .then(async (resp) => {
+              console.log("searchIndex success", resp);
               props.setQueryResponse(
                 customStringify(
                   resp.hits.hits.map((hit: SearchHit) => hit._source)
