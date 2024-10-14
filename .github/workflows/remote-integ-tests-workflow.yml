@@ -150,11 +150,6 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
         working-directory: opensearch-dashboards-functional-test
-      
-      # - uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: ${{ secrets.ML_ROLE }}
-      #     aws-region: us-west-2
 
       - name: Run spec files from output
         run: |
@@ -174,6 +169,5 @@ jobs:
         with:
           name: cypress-videos-${{ matrix.os }}
           path: opensearch-dashboards-functional-test/cypress/videos
-
 
 
