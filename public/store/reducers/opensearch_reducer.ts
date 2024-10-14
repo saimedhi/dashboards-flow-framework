@@ -91,6 +91,7 @@ export const searchIndex = createAsyncThunk(
     if (response instanceof HttpFetchError) {
       return rejectWithValue('Error searching index: ' + response.body.message);
     } else {
+      console.log('response response response response', response);
       return response;
     }
   }
