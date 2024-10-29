@@ -42,10 +42,14 @@ export const FlowFrameworkDashboardsApp = (props: Props) => {
   const location = useLocation();
   const queryParams = getDataSourceFromURL(location);
   const dataSourceId = queryParams.dataSourceId;
+  const isWorkflowDetailPage = location.pathname.includes( '/workflows/');
+  const hideInAppSideNavBar1 = isWorkflowDetailPage || hideInAppSideNavBar;
+  console.log("hideInAppSideNavBar1", hideInAppSideNavBar1);
+
   const sidebar = (
     <EuiPageSideBar
       style={{ minWidth: 190 }}
-      hidden={hideInAppSideNavBar}
+      hidden={hideInAppSideNavBar1}
       paddingSize="l"
     >
       <EuiSideNav
