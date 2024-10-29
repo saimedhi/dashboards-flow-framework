@@ -625,7 +625,7 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
   }
 
   return (
-    <EuiPanel paddingSize="m" grow={true} className="workspace-panel">
+    <EuiPanel paddingSize="m" grow={true} className="workspace-panel stretch-relative">
       {props.uiConfig === undefined ? (
         <EuiLoadingSpinner size="xl" />
       ) : (
