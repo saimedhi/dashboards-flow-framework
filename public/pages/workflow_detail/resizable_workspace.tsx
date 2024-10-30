@@ -113,6 +113,7 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
               initialSize={60}
               minSize="25%"
               paddingSize="s"
+              className="stretch-absolute panel-with-radius"
             >
               <WorkflowInputs
                 workflow={props.workflow}
@@ -139,6 +140,7 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
                 marginRight: isPreviewPanelOpen ? '-32px' : '0px',
                 marginBottom: isToolsPanelOpen ? '0px' : '24px',
               }}
+              className="stretch-absolute panel-with-radius"
               mode="collapsible"
               initialSize={60}
               minSize="25%"
@@ -146,7 +148,7 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
               onToggleCollapsedInternal={() => onTogglePreviewChange()}
             >
               <EuiResizableContainer
-                className="workspace-panel"
+                className="workspace-panel stretch-absolute"
                 direction="vertical"
                 style={{
                   marginLeft: '-8px',
@@ -173,6 +175,7 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
                         minSize="25%"
                         paddingSize="s"
                         style={{ marginBottom: '-8px' }}
+                        className="stretch-absolute"
                       >
                         <EuiFlexGroup
                           direction="column"
@@ -190,6 +193,7 @@ export function ResizableWorkspace(props: ResizableWorkspaceProps) {
                       <EuiResizableButton />
                       <EuiResizablePanel
                         id={TOOLS_PANEL_ID}
+                        className="stretch-absolute panel-with-radius"
                         mode="collapsible"
                         initialSize={50}
                         minSize="25%"
