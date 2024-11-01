@@ -31,6 +31,12 @@ export const ML_CONNECTOR_ROUTE_PREFIX = `${ML_API_ROUTE_PREFIX}/connectors`;
 export const ML_SEARCH_MODELS_ROUTE = `${ML_MODEL_ROUTE_PREFIX}/_search`;
 export const ML_SEARCH_CONNECTORS_ROUTE = `${ML_CONNECTOR_ROUTE_PREFIX}/_search`;
 
+// /**
+//  * BACKEND OpenSearch APIs
+//  */
+// export const INGEST_PIPELINE_ROUTE = '/_ingest/pipeline';
+// export const SEARCH_PIPELINE_ROUTE = '/_search/pipeline';
+
 /**
  * NODE APIs
  */
@@ -44,6 +50,8 @@ export const SEARCH_INDEX_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/sear
 export const INGEST_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/ingest`;
 export const BULK_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/bulk`;
 export const SIMULATE_PIPELINE_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/simulatePipeline`;
+export const INGEST_PIPELINE_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/getIngestPipeline`;
+export const SEARCH_PIPELINE_NODE_API_PATH = `${BASE_OPENSEARCH_NODE_API_PATH}/getSearchPipeline`;
 
 // Flow Framework node APIs
 export const BASE_WORKFLOW_NODE_API_PATH = `${BASE_NODE_API_PATH}/workflow`;

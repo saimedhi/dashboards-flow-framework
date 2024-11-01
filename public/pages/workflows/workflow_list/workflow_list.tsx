@@ -118,6 +118,7 @@ export function WorkflowList(props: WorkflowListProps) {
       icon: 'link',
       color: 'primary',
       onClick: (item: Workflow) => {
+        console.log("printed item 1234 ", item);
         setSelectedWorkflow(item);
         setIsResourcesFlyoutOpen(true);
       },
