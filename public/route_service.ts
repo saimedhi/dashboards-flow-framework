@@ -26,6 +26,8 @@ import {
   BASE_NODE_API_PATH,
   SEARCH_CONNECTORS_NODE_API_PATH,
   GET_MAPPINGS_NODE_API_PATH,
+  SEARCH_PIPELINE_NODE_API_PATH,
+  INGEST_PIPELINE_NODE_API_PATH,
 } from '../common';
 
 /**
@@ -118,12 +120,19 @@ export interface RouteService {
     body: {},
     dataSourceId?: string
   ) => Promise<any | HttpFetchError>;
-
   simulatePipeline: (
     body: {
       pipeline: IngestPipelineConfig;
       docs: SimulateIngestPipelineDoc[];
     },
+    dataSourceId?: string
+  ) => Promise<any | HttpFetchError>;
+  getIngestPipeline: (
+    pipelineId: string,
+    dataSourceId?: string
+  ) => Promise<any | HttpFetchError>;
+  getSearchPipeline: (
+    pipelineId: string,
     dataSourceId?: string
   ) => Promise<any | HttpFetchError>;
 }
@@ -345,6 +354,7 @@ export function configureRoutes(core: CoreStart): RouteService {
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/bulk`
           : BULK_NODE_API_PATH;
         const path = ingestPipeline ? `${url}/${ingestPipeline}` : url;
+        console.log("#####url bulk", url);
         const response = await core.http.post<{ respString: string }>(path, {
           body: JSON.stringify(body),
         });
@@ -358,6 +368,7 @@ export function configureRoutes(core: CoreStart): RouteService {
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/model/search`
           : SEARCH_MODELS_NODE_API_PATH;
+          console.log("#####url search model", url);
         const response = await core.http.post<{ respString: string }>(url, {
           body: JSON.stringify(body),
         });
@@ -371,6 +382,7 @@ export function configureRoutes(core: CoreStart): RouteService {
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/connector/search`
           : SEARCH_CONNECTORS_NODE_API_PATH;
+        console.log("#####url searchConnectors", url);
         const response = await core.http.post<{ respString: string }>(url, {
           body: JSON.stringify(body),
         });
@@ -390,11 +402,37 @@ export function configureRoutes(core: CoreStart): RouteService {
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/simulatePipeline`
           : SIMULATE_PIPELINE_NODE_API_PATH;
+        console.log("#####url simulatePipeline", url);
         const response = await core.http.post<{ respString: string }>(url, {
           body: JSON.stringify(body),
         });
         return response;
       } catch (e: any) {
+        return e as HttpFetchError;
+      }
+    },
+    getSearchPipeline: async (pipelineId: string, dataSourceId?: string) => {
+      try {
+        const url = dataSourceId
+          ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/getSearchPipeline`
+          : SEARCH_PIPELINE_NODE_API_PATH;
+        const response = await core.http.get<{ respString: string }>(`${url}/${pipelineId}`);
+        return response;
+      } catch (e: any) {
+        return e as HttpFetchError;
+      }
+    },
+    getIngestPipeline: async (pipelineId: string, dataSourceId?: string) => {
+      try {
+        
+        const url = dataSourceId
+          ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/getIngestPipeline`
+          : INGEST_PIPELINE_NODE_API_PATH;
+        console.log("#####url", url);
+        const response = await core.http.get<{ respString: string }>(`${url}/${pipelineId}`);
+        return response;
+      } catch (e: any) {
+        console.log("####urlError", e);
         return e as HttpFetchError;
       }
     },

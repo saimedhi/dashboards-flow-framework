@@ -11,7 +11,7 @@ import {
   EuiText,
 } from '@elastic/eui';
 import { Workflow } from '../../../../../common';
-import { ResourceList } from '../../../../general_components';
+import { ResourceListFlyout } from '../../../../general_components/resource_flyout_list';
 
 interface ResourcesProps {
   workflow?: Workflow;
@@ -29,7 +29,7 @@ export function Resources(props: ResourcesProps) {
         <>
           <EuiFlexGroup direction="row">
             <EuiFlexItem>
-              <ResourceList workflow={props.workflow} />
+              <ResourceListFlyout workflow={props.workflow} />
             </EuiFlexItem>
           </EuiFlexGroup>
         </>

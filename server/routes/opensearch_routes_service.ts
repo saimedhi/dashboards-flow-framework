@@ -17,10 +17,12 @@ import {
   CAT_INDICES_NODE_API_PATH,
   GET_MAPPINGS_NODE_API_PATH,
   INGEST_NODE_API_PATH,
+  INGEST_PIPELINE_NODE_API_PATH,
   Index,
   IndexMappings,
   IngestPipelineConfig,
   SEARCH_INDEX_NODE_API_PATH,
+  SEARCH_PIPELINE_NODE_API_PATH,
   SIMULATE_PIPELINE_NODE_API_PATH,
   SimulateIngestPipelineDoc,
   SimulateIngestPipelineResponse,
@@ -232,6 +234,52 @@ export function registerOpenSearchRoutes(
     },
     opensearchRoutesService.simulatePipeline
   );
+  // router.get(
+  //   {
+  //     path: INGEST_PIPELINE_NODE_API_PATH,
+  //     validate: {
+  //       params: schema.object({
+  //         pipeline_id: schema.string(),
+  //       }),
+  //     },
+  //   },
+  //   opensearchRoutesService.getIngestPipeline
+  // );
+  // router.get(
+  //   {
+  //     path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getIngestPipeline`,
+  //     validate: {
+  //       params: schema.object({
+  //         pipeline_id: schema.string(),
+  //         data_source_id: schema.string(),
+  //       }),
+  //     },
+  //   },
+  //   opensearchRoutesService.getIngestPipeline
+  // );
+  // router.get(
+  //   {
+  //     path: SEARCH_PIPELINE_NODE_API_PATH,
+  //     validate: {
+  //       params: schema.object({
+  //         pipeline_id: schema.string(),
+  //       }),
+  //     },
+  //   },
+  //   opensearchRoutesService.getSearchPipeline
+  // );
+  // router.get(
+  //   {
+  //     path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getSearchPipeline`,
+  //     validate: {
+  //       params: schema.object({
+  //         pipeline_id: schema.string(),
+  //         data_source_id: schema.string(),
+  //       }),
+  //     },
+  //   },
+  //   opensearchRoutesService.getSearchPipeline
+  // );
 }
 
 export class OpenSearchRoutesService {
@@ -429,4 +477,58 @@ export class OpenSearchRoutesService {
       return generateCustomError(res, err);
     }
   };
+
+  // getIngestPipeline = async (
+  //   context: RequestHandlerContext,
+  //   req: OpenSearchDashboardsRequest,
+  //   res: OpenSearchDashboardsResponseFactory
+  // ): Promise<IOpenSearchDashboardsResponse<any>> => {
+  //   const { pipeline_id } = req.params as { pipeline_id: string };
+  //   const { data_source_id = '' } = req.params as { data_source_id?: string };
+  
+  //   try {
+  //     const callWithRequest = getClientBasedOnDataSource(
+  //       context,
+  //       this.dataSourceEnabled,
+  //       req,
+  //       data_source_id,
+  //       this.client
+  //     );
+  
+  //     const response = await callWithRequest('ingest.get_pipeline', {
+  //       id: pipeline_id,
+  //     });
+  
+  //     return res.ok({ body: response });
+  //   } catch (err: any) {
+  //     return generateCustomError(res, err);
+  //   }
+  // };
+
+  // getSearchPipeline = async (
+  //   context: RequestHandlerContext,
+  //   req: OpenSearchDashboardsRequest,
+  //   res: OpenSearchDashboardsResponseFactory
+  // ): Promise<IOpenSearchDashboardsResponse<any>> => {
+  //   const { pipeline_id } = req.params as { pipeline_id: string };
+  //   const { data_source_id = '' } = req.params as { data_source_id?: string };
+  
+  //   try {
+  //     const callWithRequest = getClientBasedOnDataSource(
+  //       context,
+  //       this.dataSourceEnabled,
+  //       req,
+  //       data_source_id,
+  //       this.client
+  //     );
+  
+  //     const response = await callWithRequest('search.getPipeline', {
+  //       id: pipeline_id,
+  //     });
+  
+  //     return res.ok({ body: response });
+  //   } catch (err: any) {
+  //     return generateCustomError(res, err);
+  //   }
+  // };
 }
