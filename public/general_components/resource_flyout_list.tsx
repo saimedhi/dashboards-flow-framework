@@ -15,7 +15,8 @@ import {
   EuiFlyoutHeader,
   EuiInMemoryTable,
   EuiTitle,
-  EuiIcon
+  EuiIcon,
+  EuiText
 } from '@elastic/eui';
 import { WORKFLOW_STEP_TO_RESOURCE_TYPE_MAP, WORKFLOW_STEP_TYPE, Workflow, WorkflowResource, customStringify } from '../../common';
 
@@ -143,16 +144,24 @@ export function ResourceListFlyout(props: ResourceListFlyoutProps) {
         <EuiFlyout onClose={closeFlyout}>
           <EuiFlyoutHeader>
             <EuiTitle>
-              <h2>{selectedRowData?.type} Resource details</h2>
+              <h2>{selectedRowData?.type} - {selectedRowData?.id}</h2>
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
+          <EuiFlexGroup direction='column' gutterSize="xs">
 
-              <EuiFlexItem grow={true}>
+          <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
+            <EuiText size="m" >
+            <h4>Resource details</h4>
+            </EuiText> 
+            </EuiFlexItem>
+
+          <EuiFlexItem grow={true}>
             <EuiCodeBlock language="json" fontSize="m" isCopyable={true} overflowHeight={650} >
           {customStringify((getcodeBlockData(selectedRowData!)))}
           </EuiCodeBlock>
           </EuiFlexItem>
+          </EuiFlexGroup>
 
           </EuiFlyoutBody>
         </EuiFlyout>
