@@ -23,6 +23,7 @@ import {
   IngestPipelineConfig,
   SEARCH_INDEX_NODE_API_PATH,
   SEARCH_PIPELINE_NODE_API_PATH,
+  SEARCH_PIPELINE_ROUTE,
   SIMULATE_PIPELINE_NODE_API_PATH,
   SimulateIngestPipelineDoc,
   SimulateIngestPipelineResponse,
@@ -524,8 +525,9 @@ export class OpenSearchRoutesService {
         this.client
       );
 
-      const response = await callWithRequest('search.getPipeline', {
-        id: pipeline_id,
+      const response = await callWithRequest('transport.request', {
+        method: 'GET',
+        path: SEARCH_PIPELINE_ROUTE + '/'+pipeline_id,
       });
 
       return res.ok({ body: response });

@@ -12,6 +12,7 @@ import {
   EuiButtonIcon,
   RIGHT_ALIGNMENT,
   EuiText,
+  Direction,
 } from '@elastic/eui';
 import {
   WORKFLOW_STEP_TO_RESOURCE_TYPE_MAP,
@@ -20,7 +21,7 @@ import {
   WorkflowResource,
   customStringify,
 } from '../../common';
-import { getIngestPipeline, useAppDispatch } from '../store';
+import { getIngestPipeline, getSearchPipeline, useAppDispatch } from '../store';
 import { getDataSourceId } from '../../public/utils';
 
 interface ResourceListProps {
@@ -113,13 +114,23 @@ export function ResourceList(props: ResourceListProps) {
           ],
         });
       } else if (item.id.toLowerCase().includes('search_pipeline')) {
-        setCodeBlockData({
-          item,
-          data: [
-            { title: 'Nationality search', description: 'abcd' },
-            { title: 'Online', description: 'xyz' },
-          ],
-        });
+        await dispatch(
+          getSearchPipeline({
+            pipelineId: item.id,
+            dataSourceId,
+          })
+        )
+          .unwrap()
+          .then((result) => {
+            setCodeBlockData({ item, data: result });
+          });
+        // setCodeBlockData({
+        //   item,
+        //   data: [
+        //     { title: 'Nationality search', description: 'abcd' },
+        //     { title: 'Online', description: 'xyz' },
+        //   ],
+        // });
       }
     }
   };

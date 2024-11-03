@@ -35,7 +35,7 @@ export const ML_SEARCH_CONNECTORS_ROUTE = `${ML_CONNECTOR_ROUTE_PREFIX}/_search`
 //  * BACKEND OpenSearch APIs
 //  */
 // export const INGEST_PIPELINE_ROUTE = '/_ingest/pipeline';
-// export const SEARCH_PIPELINE_ROUTE = '/_search/pipeline';
+export const SEARCH_PIPELINE_ROUTE = '/_search/pipeline';
 
 /**
  * NODE APIs
