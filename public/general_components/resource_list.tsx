@@ -60,6 +60,7 @@ export function ResourceList(props: ResourceListProps) {
     if (itemIdToExpandedRowMapValues[item.id]) {
       delete itemIdToExpandedRowMapValues[item.id];
     } else {
+      console.log("item.id", item.id);
       var codeBlockData: {} = [];
       console.log('dispatch started');
       if (item.type.toLowerCase() == 'ingest pipeline') {
