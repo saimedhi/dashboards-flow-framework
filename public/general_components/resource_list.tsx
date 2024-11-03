@@ -55,6 +55,7 @@ export function ResourceList(props: ResourceListProps) {
   }, [props.workflow?.resourcesCreated]);
 
   useEffect(() => {
+    console.log("useeffect codeBlockData", codeBlockData);
     if (codeBlockData) {
       const { item, data } = codeBlockData;
       setItemIdToExpandedRowMap((prevMap) => ({
@@ -82,7 +83,7 @@ export function ResourceList(props: ResourceListProps) {
         </EuiCodeBlock>
       </EuiFlexItem>
     </EuiFlexGroup>
-  ),[]);
+  ),[codeBlockData]);
 
   const toggleDetails = async (item: WorkflowResource) => {
     console.log('item printed printed', item);
