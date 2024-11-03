@@ -5,14 +5,13 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Direction,
   EuiCodeBlock,
   EuiFlexGroup,
   EuiFlexItem,
   EuiBasicTable,
   EuiButtonIcon,
   RIGHT_ALIGNMENT,
-  EuiText
+  EuiText,
 } from '@elastic/eui';
 import {
   WORKFLOW_STEP_TO_RESOURCE_TYPE_MAP,
@@ -34,11 +33,12 @@ interface ResourceListProps {
 export function ResourceList(props: ResourceListProps) {
   console.log('props printed printed', props.workflow?.resourcesCreated);
   const [allResources, setAllResources] = useState<WorkflowResource[]>([]);
-  const dispatch = useAppDispatch();
-  const dataSourceId = getDataSourceId();
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<{
     [key: string]: React.ReactNode;
   }>({});
+  const [codeBlockData, setCodeBlockData] = useState<any>(null);
+  const dispatch = useAppDispatch();
+  const dataSourceId = getDataSourceId();
 
   // Hook to initialize all resources. Reduce to unique IDs, since
   // the backend resources may include the same resource multiple times
@@ -46,7 +46,7 @@ export function ResourceList(props: ResourceListProps) {
   useEffect(() => {
     console.log('props.workflow printed printed', props.workflow);
     if (props.workflow?.resourcesCreated) {
-      const resourcesMap = {} as { [id: string]: WorkflowResource };
+      const resourcesMap: { [id: string]: WorkflowResource } = {};
       props.workflow.resourcesCreated.forEach((resource) => {
         resourcesMap[resource.id] = resource;
       });
@@ -54,7 +54,17 @@ export function ResourceList(props: ResourceListProps) {
     }
   }, [props.workflow?.resourcesCreated]);
 
-  const renderExpandedRow = (codeBlockData: any) => (
+  useEffect(() => {
+    if (codeBlockData) {
+      const { item, data } = codeBlockData;
+      setItemIdToExpandedRowMap((prevMap) => ({
+        ...prevMap,
+        [item.id]: renderExpandedRow(data),
+      }));
+    }
+  }, [codeBlockData]);
+
+  const renderExpandedRow = (data: any) => (
     <EuiFlexGroup direction="column" gutterSize="xs">
       <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
         <EuiText size="m">
@@ -68,7 +78,7 @@ export function ResourceList(props: ResourceListProps) {
           isCopyable={true}
           overflowHeight={150}
         >
-          {customStringify(codeBlockData)}
+          {customStringify(data)}
         </EuiCodeBlock>
       </EuiFlexItem>
     </EuiFlexGroup>
@@ -80,11 +90,8 @@ export function ResourceList(props: ResourceListProps) {
 
     if (updatedItemIdToExpandedRowMap[item.id]) {
       delete updatedItemIdToExpandedRowMap[item.id];
+      setItemIdToExpandedRowMap(updatedItemIdToExpandedRowMap);
     } else {
-      console.log("item.id", item.id);
-      let codeBlockData: any = [];
-      console.log("codeblock0", codeBlockData);
-      console.log('dispatch started');
       if (item.type.toLowerCase() === 'ingest pipeline') {
         await dispatch(
           getIngestPipeline({
@@ -94,44 +101,31 @@ export function ResourceList(props: ResourceListProps) {
         )
           .unwrap()
           .then((result) => {
-            codeBlockData = result;
-            updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
-            setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
+            setCodeBlockData({ item, data: result });
           });
       } else if (item.type.toLowerCase() === 'index') {
-        codeBlockData = [
-          {
-            title: 'Nationality index',
-            description: 'abcd',
-          },
-          {
-            title: 'Online',
-            description: 'xyz',
-          },
-        ];
-        updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
-        setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
+        setCodeBlockData({
+          item,
+          data: [
+            { title: 'Nationality index', description: 'abcd' },
+            { title: 'Online', description: 'xyz' },
+          ],
+        });
       } else if (item.type.toLowerCase() === 'search pipeline') {
-        codeBlockData = [
-          {
-            title: 'Nationality search',
-            description: 'abcd',
-          },
-          {
-            title: 'Online',
-            description: 'xyz',
-          },
-        ];
-        updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
-        setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
+        setCodeBlockData({
+          item,
+          data: [
+            { title: 'Nationality search', description: 'abcd' },
+            { title: 'Online', description: 'xyz' },
+          ],
+        });
       }
     }
   };
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  // Ensure sortField is of the correct type
-  const [sortField, setSortField] = useState<keyof WorkflowResource>('id'); // Use a default field that matches WorkflowResource
+  const [sortField, setSortField] = useState<keyof WorkflowResource>('id');
   const [sortDirection, setSortDirection] = useState<Direction>('asc');
 
   // Corrected onTableChange function
@@ -144,7 +138,7 @@ export function ResourceList(props: ResourceListProps) {
 
     setPageIndex(pageIndex);
     setPageSize(pageSize);
-    setSortField(field as keyof WorkflowResource); // Ensure correct type assignment
+    setSortField(field as keyof WorkflowResource);
     setSortDirection(direction);
   };
 
