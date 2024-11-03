@@ -236,7 +236,7 @@ export function registerOpenSearchRoutes(
   );
   router.get(
     {
-      path: INGEST_PIPELINE_NODE_API_PATH,
+      path: `${INGEST_PIPELINE_NODE_API_PATH}/{pipeline_id}`,
       validate: {
         params: schema.object({
           pipeline_id: schema.string(),
@@ -247,7 +247,7 @@ export function registerOpenSearchRoutes(
   );
   router.get(
     {
-      path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getIngestPipeline`,
+      path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getIngestPipeline/{pipeline_id}`,
       validate: {
         params: schema.object({
           pipeline_id: schema.string(),
@@ -259,7 +259,7 @@ export function registerOpenSearchRoutes(
   );
   router.get(
     {
-      path: SEARCH_PIPELINE_NODE_API_PATH,
+      path: `${SEARCH_PIPELINE_NODE_API_PATH}/{pipeline_id}`,
       validate: {
         params: schema.object({
           pipeline_id: schema.string(),
@@ -270,7 +270,7 @@ export function registerOpenSearchRoutes(
   );
   router.get(
     {
-      path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getSearchPipeline`,
+      path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/getSearchPipeline/{pipeline_id}`,
       validate: {
         params: schema.object({
           pipeline_id: schema.string(),
@@ -500,11 +500,6 @@ export class OpenSearchRoutesService {
       const response = await callWithRequest('ingest.getPipeline', {
         id: pipeline_id,
       });
-      // const response = await callWithRequest('transport.request', {
-      //   method: 'GET',
-      //   path: '/_ingest/pipeline/' + 'ingest_pipeline_a9660bad2e64c06ex',
-      // });
-
       return res.ok({ body: response });
     } catch (err: any) {
       console.log('Opensearch route service printed  err ', err);

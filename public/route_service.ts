@@ -412,7 +412,9 @@ export function configureRoutes(core: CoreStart): RouteService {
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/getSearchPipeline`
           : SEARCH_PIPELINE_NODE_API_PATH;
-        const response = await core.http.get<{ respString: string }>(`${url}/${pipelineId}`);
+        const response = await core.http.get<{ respString: string }>(
+          `${url}/${pipelineId}`
+        );
         return response;
       } catch (e: any) {
         return e as HttpFetchError;
@@ -420,15 +422,16 @@ export function configureRoutes(core: CoreStart): RouteService {
     },
     getIngestPipeline: async (pipelineId: string, dataSourceId?: string) => {
       try {
-        
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/getIngestPipeline`
           : INGEST_PIPELINE_NODE_API_PATH;
-        console.log("#####url", url);
-        const response = await core.http.get<{ respString: string }>(`${url}/${pipelineId}`);
+        console.log('#####url', url);
+        const response = await core.http.get<{ respString: string }>(
+          `${url}/${pipelineId}`
+        );
         return response;
       } catch (e: any) {
-        console.log("####urlError", e);
+        console.log('####urlError', e);
         return e as HttpFetchError;
       }
     },
