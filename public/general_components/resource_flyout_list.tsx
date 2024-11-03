@@ -111,7 +111,7 @@ export function ResourceListFlyout(props: ResourceListFlyoutProps) {
     },
     {
       name: 'Actions',
-      width: '10%',
+      width: '20%',
 
           render:(row:WorkflowResource)=>(
             <EuiIcon onClick={()=>openFlyout(row)
@@ -143,7 +143,7 @@ export function ResourceListFlyout(props: ResourceListFlyoutProps) {
         <EuiFlyout onClose={closeFlyout}>
           <EuiFlyoutHeader>
             <EuiTitle>
-              <h2>Details for {selectedRowData?.type}</h2>
+              <h2>{selectedRowData?.type} Resource details</h2>
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
