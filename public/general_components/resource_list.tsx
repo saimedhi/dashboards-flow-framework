@@ -86,15 +86,15 @@ export function ResourceList(props: ResourceListProps) {
       } else if (item.type.toLowerCase() == 'search pipeline') {
       }
       itemIdToExpandedRowMapValues[item.id] = (
-        <EuiFlexGroup direction='column'>
+        <EuiFlexGroup direction='column' gutterSize="none">
 
-        <EuiFlexItem grow={true} style={{ paddingLeft: '10px' }}>
+        <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
           <EuiText size="m" >
           <h4>Resource details</h4>
           </EuiText> 
           </EuiFlexItem>
 
-          <EuiFlexItem grow={true} style={{ paddingLeft: '10px' }}>  
+          <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>  
           <EuiCodeBlock
             language="json"
             fontSize="m"
