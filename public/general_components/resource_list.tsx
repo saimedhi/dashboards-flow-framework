@@ -12,6 +12,7 @@ import {
   EuiBasicTable,
   EuiButtonIcon,
   RIGHT_ALIGNMENT,
+  EuiText
 } from '@elastic/eui';
 import {
   WORKFLOW_STEP_TO_RESOURCE_TYPE_MAP,
@@ -22,7 +23,6 @@ import {
 } from '../../common';
 import { getIngestPipeline, useAppDispatch } from '../store';
 import { getDataSourceId } from '../../public/utils';
-import { EuiText } from '@opensearch-project/oui';
 
 interface ResourceListProps {
   workflow?: Workflow;
