@@ -96,7 +96,7 @@ export function ResourceList(props: ResourceListProps) {
       if (item.type.toLowerCase() === 'ingest pipeline') {
         await dispatch(
           getIngestPipeline({
-            pipelineId: 'ingest_pipeline_a9660bad2e64c06e',
+            pipelineId: item.id,
             dataSourceId,
           })
         )
