@@ -81,6 +81,7 @@ export function ResourceList(props: ResourceListProps) {
           .unwrap()
           .then(async (result) => {
             console.log('dispatch result', result);
+            codeBlockData=result;
           });
       } else if (item.type.toLowerCase() == 'index') {
       } else if (item.type.toLowerCase() == 'search pipeline') {

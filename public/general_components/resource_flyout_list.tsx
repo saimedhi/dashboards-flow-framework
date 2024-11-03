@@ -144,7 +144,7 @@ export function ResourceListFlyout(props: ResourceListFlyoutProps) {
         <EuiFlyout onClose={closeFlyout}>
           <EuiFlyoutHeader>
             <EuiTitle>
-              <h2>{selectedRowData?.type} - {selectedRowData?.id}</h2>
+              <h2>{selectedRowData?.id}</h2>
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
