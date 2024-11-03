@@ -60,16 +60,7 @@ export function ResourceList(props: ResourceListProps) {
     if (itemIdToExpandedRowMapValues[item.id]) {
       delete itemIdToExpandedRowMapValues[item.id];
     } else {
-      var codeBlockData = [
-        {
-          title: 'Nationality',
-          description: 'abcd',
-        },
-        {
-          title: 'Online',
-          description: 'xyz',
-        },
-      ];
+      var codeBlockData: {} = [];
       console.log('dispatch started');
       if (item.type.toLowerCase() == 'ingest pipeline') {
         await dispatch(
@@ -84,7 +75,27 @@ export function ResourceList(props: ResourceListProps) {
             codeBlockData=result;
           });
       } else if (item.type.toLowerCase() == 'index') {
+        codeBlockData = [
+          {
+            title: 'Nationality index',
+            description: 'abcd',
+          },
+          {
+            title: 'Online',
+            description: 'xyz',
+          },
+        ];
       } else if (item.type.toLowerCase() == 'search pipeline') {
+        codeBlockData = [
+          {
+            title: 'Nationality search',
+            description: 'abcd',
+          },
+          {
+            title: 'Online',
+            description: 'xyz',
+          },
+        ];
       }
       itemIdToExpandedRowMapValues[item.id] = (
         <EuiFlexGroup direction='column' gutterSize="xs">
