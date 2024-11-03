@@ -93,7 +93,7 @@ export function ResourceList(props: ResourceListProps) {
       delete updatedItemIdToExpandedRowMap[item.id];
       setItemIdToExpandedRowMap(updatedItemIdToExpandedRowMap);
     } else {
-      if (item.type.toLowerCase() === 'ingest pipeline') {
+      if (item.id.toLowerCase().includes('ingest_pipeline')) {
         await dispatch(
           getIngestPipeline({
             pipelineId: item.id,
