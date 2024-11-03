@@ -112,7 +112,7 @@ export function ResourceList(props: ResourceListProps) {
             { title: 'Online', description: 'xyz' },
           ],
         });
-      } else if (item.type.toLowerCase() === 'search pipeline') {
+      } else if (item.id.toLowerCase().includes('search_pipeline')) {
         setCodeBlockData({
           item,
           data: [
