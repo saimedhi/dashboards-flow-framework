@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   EuiCodeBlock,
   EuiFlexGroup,
@@ -64,7 +64,7 @@ export function ResourceList(props: ResourceListProps) {
     }
   }, [codeBlockData]);
 
-  const renderExpandedRow = (data: any) => (
+  const renderExpandedRow = useCallback((data: any) => (
     <EuiFlexGroup direction="column" gutterSize="xs">
       <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
         <EuiText size="m">
@@ -82,7 +82,7 @@ export function ResourceList(props: ResourceListProps) {
         </EuiCodeBlock>
       </EuiFlexItem>
     </EuiFlexGroup>
-  );
+  ),[]);
 
   const toggleDetails = async (item: WorkflowResource) => {
     console.log('item printed printed', item);
