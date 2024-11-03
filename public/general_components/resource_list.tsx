@@ -22,6 +22,7 @@ import {
 } from '../../common';
 import { getIngestPipeline, useAppDispatch } from '../store';
 import { getDataSourceId } from '../../public/utils';
+import { EuiText } from '@opensearch-project/oui';
 
 interface ResourceListProps {
   workflow?: Workflow;
@@ -85,7 +86,10 @@ export function ResourceList(props: ResourceListProps) {
       } else if (item.type.toLowerCase() == 'search pipeline') {
       }
       itemIdToExpandedRowMapValues[item.id] = (
-        <EuiFlexItem grow={true}>
+        <EuiFlexItem grow={true} style={{ paddingLeft: '10px' }}>
+          <EuiText size="m" >
+          <h4>Resource details</h4>
+          </EuiText>   
           <EuiCodeBlock
             language="json"
             fontSize="m"

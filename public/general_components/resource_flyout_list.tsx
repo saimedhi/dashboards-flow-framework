@@ -116,7 +116,7 @@ export function ResourceListFlyout(props: ResourceListFlyoutProps) {
           render:(row:WorkflowResource)=>(
             <EuiIcon onClick={()=>openFlyout(row)
           }
-            type="eye" size = "m" style={{cursor:'pointer'}}
+            type="inspect" size = "m" style={{cursor:'pointer'}}
           
           />
           )
