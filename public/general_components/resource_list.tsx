@@ -55,7 +55,7 @@ export function ResourceList(props: ResourceListProps) {
   }, [props.workflow?.resourcesCreated]);
 
   const renderExpandedRow = (codeBlockData: any) => (
-    <EuiFlexGroup direction='column' gutterSize="xs">
+    <EuiFlexGroup direction="column" gutterSize="xs">
       <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
         <EuiText size="m">
           <h4>Resource details</h4>
@@ -76,16 +76,16 @@ export function ResourceList(props: ResourceListProps) {
 
   const toggleDetails = async (item: WorkflowResource) => {
     console.log('item printed printed', item);
-    const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
-    if (itemIdToExpandedRowMapValues[item.id]) {
-      delete itemIdToExpandedRowMapValues[item.id];
+    const updatedItemIdToExpandedRowMap = { ...itemIdToExpandedRowMap };
+
+    if (updatedItemIdToExpandedRowMap[item.id]) {
+      delete updatedItemIdToExpandedRowMap[item.id];
     } else {
       console.log("item.id", item.id);
       let codeBlockData: any = [];
       console.log("codeblock0", codeBlockData);
       console.log('dispatch started');
-      if (item.type.toLowerCase() == 'ingest pipeline') {
-        console.log("item.type ingest", item.id);
+      if (item.type.toLowerCase() === 'ingest pipeline') {
         await dispatch(
           getIngestPipeline({
             pipelineId: 'ingest_pipeline_a9660bad2e64c06e',
@@ -93,15 +93,12 @@ export function ResourceList(props: ResourceListProps) {
           })
         )
           .unwrap()
-          .then(async (result) => {
-            console.log('dispatch result', result);
-            codeBlockData=result;
-            console.log("codeblock1", codeBlockData);
-            itemIdToExpandedRowMapValues[item.id] = renderExpandedRow(codeBlockData);
+          .then((result) => {
+            codeBlockData = result;
+            updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
+            setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
           });
-
-      } else if (item.type.toLowerCase() == 'index') {
-        console.log("item.type index", item.id);
+      } else if (item.type.toLowerCase() === 'index') {
         codeBlockData = [
           {
             title: 'Nationality index',
@@ -112,10 +109,9 @@ export function ResourceList(props: ResourceListProps) {
             description: 'xyz',
           },
         ];
-        console.log("codeblock2", codeBlockData);
-        itemIdToExpandedRowMapValues[item.id] = renderExpandedRow(codeBlockData);
-      } else if (item.type.toLowerCase() == 'search pipeline') {
-        console.log("item.type search", item.id);
+        updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
+        setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
+      } else if (item.type.toLowerCase() === 'search pipeline') {
         codeBlockData = [
           {
             title: 'Nationality search',
@@ -126,32 +122,10 @@ export function ResourceList(props: ResourceListProps) {
             description: 'xyz',
           },
         ];
-        console.log("codeblock3", codeBlockData);
-        itemIdToExpandedRowMapValues[item.id] = renderExpandedRow(codeBlockData);
+        updatedItemIdToExpandedRowMap[item.id] = renderExpandedRow(codeBlockData);
+        setItemIdToExpandedRowMap({ ...updatedItemIdToExpandedRowMap });
       }
-      // itemIdToExpandedRowMapValues[item.id] = (
-      //   <EuiFlexGroup direction='column' gutterSize="xs">
-
-      //   <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
-      //     <EuiText size="m" >
-      //     <h4>Resource details</h4>
-      //     </EuiText> 
-      //     </EuiFlexItem>
-
-      //     <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>  
-      //     <EuiCodeBlock
-      //       language="json"
-      //       fontSize="m"
-      //       isCopyable={true}
-      //       overflowHeight={150}
-      //     >
-      //       {customStringify(codeBlockData)}
-      //     </EuiCodeBlock>
-      //   </EuiFlexItem>
-      //   </EuiFlexGroup>
-      // );
     }
-    setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
   };
 
   const [pageIndex, setPageIndex] = useState(0);
