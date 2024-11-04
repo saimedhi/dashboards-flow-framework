@@ -21,7 +21,12 @@ import {
   WorkflowResource,
   customStringify,
 } from '../../common';
-import { getIngestPipeline, getSearchPipeline, useAppDispatch } from '../store';
+import {
+  getIndex,
+  getIngestPipeline,
+  getSearchPipeline,
+  useAppDispatch,
+} from '../store';
 import { getDataSourceId } from '../../public/utils';
 
 interface ResourceListProps {
@@ -56,7 +61,7 @@ export function ResourceList(props: ResourceListProps) {
   }, [props.workflow?.resourcesCreated]);
 
   useEffect(() => {
-    console.log("useeffect codeBlockData", codeBlockData);
+    console.log('useeffect codeBlockData', codeBlockData);
     if (codeBlockData) {
       const { item, data } = codeBlockData;
       setItemIdToExpandedRowMap((prevMap) => ({
@@ -66,25 +71,28 @@ export function ResourceList(props: ResourceListProps) {
     }
   }, [codeBlockData]);
 
-  const renderExpandedRow = useCallback((data: any) => (
-    <EuiFlexGroup direction="column" gutterSize="xs">
-      <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
-        <EuiText size="m">
-          <h4>Resource details</h4>
-        </EuiText>
-      </EuiFlexItem>
-      <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
-        <EuiCodeBlock
-          language="json"
-          fontSize="m"
-          isCopyable={true}
-          overflowHeight={150}
-        >
-          {customStringify(data)}
-        </EuiCodeBlock>
-      </EuiFlexItem>
-    </EuiFlexGroup>
-  ),[codeBlockData]);
+  const renderExpandedRow = useCallback(
+    (data: any) => (
+      <EuiFlexGroup direction="column" gutterSize="xs">
+        <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
+          <EuiText size="m">
+            <h4>Resource details</h4>
+          </EuiText>
+        </EuiFlexItem>
+        <EuiFlexItem grow={true} style={{ paddingLeft: '20px' }}>
+          <EuiCodeBlock
+            language="json"
+            fontSize="m"
+            isCopyable={true}
+            overflowHeight={150}
+          >
+            {customStringify(data)}
+          </EuiCodeBlock>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    ),
+    [codeBlockData]
+  );
 
   const toggleDetails = async (item: WorkflowResource) => {
     console.log('item printed printed', item);
@@ -106,13 +114,16 @@ export function ResourceList(props: ResourceListProps) {
             setCodeBlockData({ item, data: result });
           });
       } else if (item.type.toLowerCase() === 'index') {
-        setCodeBlockData({
-          item,
-          data: [
-            { title: 'Nationality index', description: 'abcd' },
-            { title: 'Online', description: 'xyz' },
-          ],
-        });
+        await dispatch(
+          getIndex({
+            index: item.id,
+            dataSourceId,
+          })
+        )
+          .unwrap()
+          .then((result) => {
+            setCodeBlockData({ item, data: result });
+          });
       } else if (item.id.toLowerCase().includes('search_pipeline')) {
         await dispatch(
           getSearchPipeline({
@@ -124,13 +135,6 @@ export function ResourceList(props: ResourceListProps) {
           .then((result) => {
             setCodeBlockData({ item, data: result });
           });
-        // setCodeBlockData({
-        //   item,
-        //   data: [
-        //     { title: 'Nationality search', description: 'abcd' },
-        //     { title: 'Online', description: 'xyz' },
-        //   ],
-        // });
       }
     }
   };

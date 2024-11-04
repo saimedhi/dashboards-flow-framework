@@ -15,6 +15,7 @@ import {
   BASE_NODE_API_PATH,
   BULK_NODE_API_PATH,
   CAT_INDICES_NODE_API_PATH,
+  BASE_OPENSEARCH_NODE_API_PATH,
   GET_MAPPINGS_NODE_API_PATH,
   INGEST_NODE_API_PATH,
   INGEST_PIPELINE_NODE_API_PATH,
@@ -84,6 +85,29 @@ export function registerOpenSearchRoutes(
       },
     },
     opensearchRoutesService.getMappings
+  );
+  router.get(
+    {
+      path: `${BASE_OPENSEARCH_NODE_API_PATH}/{index}`,
+      validate: {
+        params: schema.object({
+          index: schema.string(),
+        }),
+      },
+    },
+    opensearchRoutesService.getIndex
+  );
+  router.get(
+    {
+      path: `${BASE_NODE_API_PATH}/{data_source_id}/opensearch/{index}`,
+      validate: {
+        params: schema.object({
+          index: schema.string(),
+          data_source_id: schema.string(),
+        }),
+      },
+    },
+    opensearchRoutesService.getIndex
   );
   router.post(
     {
@@ -357,6 +381,30 @@ export class OpenSearchRoutesService {
     }
   };
 
+  getIndex = async (
+    context: RequestHandlerContext,
+    req: OpenSearchDashboardsRequest,
+    res: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<any>> => {
+    const { index } = req.params as { index: string };
+    const { data_source_id = '' } = req.params as { data_source_id?: string };
+    try {
+      const callWithRequest = getClientBasedOnDataSource(
+        context,
+        this.dataSourceEnabled,
+        req,
+        data_source_id,
+        this.client
+      );
+      const response = await callWithRequest('indices.get', {
+        index,
+      });
+      return res.ok({ body: response });
+    } catch (err: any) {
+      return generateCustomError(res, err);
+    }
+  };
+
   searchIndex = async (
     context: RequestHandlerContext,
     req: OpenSearchDashboardsRequest,
@@ -527,7 +575,7 @@ export class OpenSearchRoutesService {
 
       const response = await callWithRequest('transport.request', {
         method: 'GET',
-        path: SEARCH_PIPELINE_ROUTE + '/'+pipeline_id,
+        path: SEARCH_PIPELINE_ROUTE + '/' + pipeline_id,
       });
 
       return res.ok({ body: response });

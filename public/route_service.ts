@@ -28,6 +28,7 @@ import {
   GET_MAPPINGS_NODE_API_PATH,
   SEARCH_PIPELINE_NODE_API_PATH,
   INGEST_PIPELINE_NODE_API_PATH,
+  BASE_OPENSEARCH_NODE_API_PATH,
 } from '../common';
 
 /**
@@ -84,6 +85,10 @@ export interface RouteService {
     dataSourceId?: string
   ) => Promise<any | HttpFetchError>;
   getMappings: (
+    index: string,
+    dataSourceId?: string
+  ) => Promise<any | HttpFetchError>;
+  getIndex: (
     index: string,
     dataSourceId?: string
   ) => Promise<any | HttpFetchError>;
@@ -289,6 +294,19 @@ export function configureRoutes(core: CoreStart): RouteService {
         const url = dataSourceId
           ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch/mappings`
           : GET_MAPPINGS_NODE_API_PATH;
+        const response = await core.http.get<{ respString: string }>(
+          `${url}/${index}`
+        );
+        return response;
+      } catch (e: any) {
+        return e as HttpFetchError;
+      }
+    },
+    getIndex: async (index: string, dataSourceId?: string) => {
+      try {
+        const url = dataSourceId
+          ? `${BASE_NODE_API_PATH}/${dataSourceId}/opensearch`
+          : BASE_OPENSEARCH_NODE_API_PATH;
         const response = await core.http.get<{ respString: string }>(
           `${url}/${index}`
         );

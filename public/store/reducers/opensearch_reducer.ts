@@ -71,6 +71,26 @@ export const getMappings = createAsyncThunk(
   }
 );
 
+export const getIndex = createAsyncThunk(
+  GET_MAPPINGS_ACTION,
+  async (
+    { index, dataSourceId }: { index: string; dataSourceId?: string },
+    { rejectWithValue }
+  ) => {
+    const response: any | HttpFetchError = await getRouteService().getIndex(
+      index,
+      dataSourceId
+    );
+    if (response instanceof HttpFetchError) {
+      return rejectWithValue(
+        'Error getting index mappings: ' + response.body.message
+      );
+    } else {
+      return response;
+    }
+  }
+);
+
 export const searchIndex = createAsyncThunk(
   SEARCH_INDEX_ACTION,
   async (
