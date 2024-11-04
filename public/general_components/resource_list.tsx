@@ -138,13 +138,13 @@ export function ResourceList(props: ResourceListProps) {
   };
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [sortField, setSortField] = useState<keyof WorkflowResource>('id');
   const [sortDirection, setSortDirection] = useState<Direction>('asc');
 
   // Corrected onTableChange function
   const onTableChange = ({
-    page = { index: 0, size: 10 },
+    page = { index: pageIndex, size: pageSize },
     sort = { field: 'id', direction: 'asc' },
   }: any) => {
     const { index: pageIndex, size: pageSize } = page;
