@@ -48,7 +48,7 @@ export function ResourceList(props: ResourceListProps) {
   const [pageSize, setPageSize] = useState(10);
   const [sortField, setSortField] = useState<keyof WorkflowResource>('id');
   const [sortDirection, setSortDirection] = useState<Direction>('asc');
-  const [totalItemCount, setTotalItemCount] = useState(0);
+  //const [totalItemCount, setTotalItemCount] = useState(0);
 
   // Hook to initialize all resources. Reduce to unique IDs, since
   // the backend resources may include the same resource multiple times
@@ -60,9 +60,9 @@ export function ResourceList(props: ResourceListProps) {
         resourcesMap[resource.id] = resource;
       });
       setAllResources(Object.values(resourcesMap));
-      setTotalItemCount(allResources.length);
-      console.log("allResources.length",allResources.length );
-      console.log("totalItemCount",totalItemCount );
+      // setTotalItemCount(allResources.length);
+      // console.log("allResources.length",allResources.length );
+      // console.log("totalItemCount",totalItemCount );
     }
   }, [props.workflow?.resourcesCreated]);
 
@@ -173,7 +173,7 @@ export function ResourceList(props: ResourceListProps) {
   const pagination = {
     pageIndex,
     pageSize,
-    totalItemCount,
+    totalItemCount: allResources.length, 
     pageSizeOptions: [10, 25, 50],
   };
 
