@@ -44,7 +44,7 @@ export function ResourceList(props: ResourceListProps) {
   const [codeBlockData, setCodeBlockData] = useState<any>(null);
   const dispatch = useAppDispatch();
   const dataSourceId = getDataSourceId();
-  let totalItemCount = 0;
+  const [totalItemCount, setTotalItemCount] = useState(0);
 
   // Hook to initialize all resources. Reduce to unique IDs, since
   // the backend resources may include the same resource multiple times
@@ -56,7 +56,7 @@ export function ResourceList(props: ResourceListProps) {
         resourcesMap[resource.id] = resource;
       });
       setAllResources(Object.values(resourcesMap));
-      totalItemCount = allResources.length;
+      setTotalItemCount(allResources.length);
     }
   }, [props.workflow?.resourcesCreated]);
 
