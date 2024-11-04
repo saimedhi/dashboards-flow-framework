@@ -44,6 +44,10 @@ export function ResourceList(props: ResourceListProps) {
   const [codeBlockData, setCodeBlockData] = useState<any>(null);
   const dispatch = useAppDispatch();
   const dataSourceId = getDataSourceId();
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [sortField, setSortField] = useState<keyof WorkflowResource>('id');
+  const [sortDirection, setSortDirection] = useState<Direction>('asc');
   const [totalItemCount, setTotalItemCount] = useState(0);
 
   // Hook to initialize all resources. Reduce to unique IDs, since
@@ -57,6 +61,8 @@ export function ResourceList(props: ResourceListProps) {
       });
       setAllResources(Object.values(resourcesMap));
       setTotalItemCount(allResources.length);
+      console.log("allResources.length",allResources.length );
+      console.log("totalItemCount",totalItemCount );
     }
   }, [props.workflow?.resourcesCreated]);
 
@@ -136,11 +142,6 @@ export function ResourceList(props: ResourceListProps) {
       }
     }
   };
-
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const [sortField, setSortField] = useState<keyof WorkflowResource>('id');
-  const [sortDirection, setSortDirection] = useState<Direction>('asc');
 
   // Corrected onTableChange function
   const onTableChange = ({
