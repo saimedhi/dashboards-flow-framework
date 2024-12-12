@@ -4,13 +4,9 @@
  */
 
 import React from 'react';
-import {
-  Route,
-  RouteComponentProps,
-  Switch,
-} from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
-import { APP_PATH } from './utils';
+import { APP_PATH, getDataSourceId } from './utils';
 import {
   Workflows,
   WorkflowDetail,
@@ -28,7 +24,7 @@ interface Props extends RouteComponentProps {
 
 export const FlowFrameworkDashboardsApp = (props: Props) => {
   const { setHeaderActionMenu } = props;
-
+  const dataSourceId = getDataSourceId();
 
   // Render the application DOM.
   return (
@@ -53,7 +49,11 @@ export const FlowFrameworkDashboardsApp = (props: Props) => {
           <Route
             path={APP_PATH.WORKFLOWS}
             render={(routeProps: RouteComponentProps<WorkflowsRouterProps>) => (
-              <Workflows setActionMenu={setHeaderActionMenu} {...routeProps} />
+              <Workflows
+                setActionMenu={setHeaderActionMenu}
+                landingDataSourceId={dataSourceId}
+                {...routeProps}
+              />
             )}
           />
           {/*
@@ -72,6 +72,7 @@ export const FlowFrameworkDashboardsApp = (props: Props) => {
               return (
                 <Workflows
                   setActionMenu={setHeaderActionMenu}
+                  landingDataSourceId={dataSourceId}
                   {...routeProps}
                 />
               );

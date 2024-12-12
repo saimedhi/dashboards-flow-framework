@@ -413,8 +413,7 @@ export const getDataSourceFromURL = (location: {
   const queryParams = queryString.parse(location.search);
   const dataSourceId = queryParams.dataSourceId;
   return {
-    dataSourceId:
-      typeof dataSourceId === 'string' ? escape(dataSourceId) : undefined,
+    dataSourceId: typeof dataSourceId === 'string' ? dataSourceId : undefined,
   };
 };
 

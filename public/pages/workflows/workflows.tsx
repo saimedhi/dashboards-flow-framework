@@ -45,6 +45,7 @@ export interface WorkflowsRouterProps {}
 
 interface WorkflowsProps extends RouteComponentProps<WorkflowsRouterProps> {
   setActionMenu: (menuMount: MountPoint | undefined) => void;
+  landingDataSourceId: string | undefined;
 }
 
 export enum WORKFLOWS_TAB {
@@ -116,12 +117,15 @@ export function Workflows(props: WorkflowsProps) {
   // If the user navigates back to the manage tab, re-fetch workflows
   useEffect(() => {
     if (selectedTabId === WORKFLOWS_TAB.MANAGE) {
-      dispatch(
-        searchWorkflows({
-          apiBody: FETCH_ALL_QUERY,
-          dataSourceId: dataSourceId,
-        })
-      );
+      // wait until selected data source is ready before doing dispatch calls if mds is enabled
+      if (!dataSourceEnabled || (dataSourceId && dataSourceId !== '')) {
+        dispatch(
+          searchWorkflows({
+            apiBody: FETCH_ALL_QUERY,
+            dataSourceId: dataSourceId,
+          })
+        );
+      }
     }
   }, [selectedTabId]);
 
@@ -138,12 +142,15 @@ export function Workflows(props: WorkflowsProps) {
 
   // On initial render: fetch all workflows
   useEffect(() => {
-    dispatch(
-      searchWorkflows({
-        apiBody: FETCH_ALL_QUERY,
-        dataSourceId: dataSourceId,
-      })
-    );
+    // wait until selected data source is ready before doing dispatch calls if mds is enabled
+    if (!dataSourceEnabled || (dataSourceId && dataSourceId !== '')) {
+      dispatch(
+        searchWorkflows({
+          apiBody: FETCH_ALL_QUERY,
+          dataSourceId: dataSourceId,
+        })
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -158,12 +165,15 @@ export function Workflows(props: WorkflowsProps) {
         search: queryString.stringify(updatedParams),
       });
     }
-    dispatch(
-      searchWorkflows({
-        apiBody: FETCH_ALL_QUERY,
-        dataSourceId: dataSourceId,
-      })
-    );
+    // wait until selected data source is ready before doing dispatch calls if mds is enabled
+    if (!dataSourceEnabled || (dataSourceId && dataSourceId !== '')) {
+      dispatch(
+        searchWorkflows({
+          apiBody: FETCH_ALL_QUERY,
+          dataSourceId: dataSourceId,
+        })
+      );
+    }
   }, [dataSourceId, setDataSourceId]);
 
   const handleDataSourceChange = ([event]: DataSourceOption[]) => {
@@ -192,7 +202,11 @@ export function Workflows(props: WorkflowsProps) {
           componentConfig={{
             fullWidth: false,
             activeOption:
-              dataSourceId === undefined ? undefined : [{ id: dataSourceId }],
+              props.landingDataSourceId === undefined ||
+              dataSourceId === undefined
+                ? undefined
+                : [{ id: dataSourceId }],
+
             savedObjects: getSavedObjectsClient(),
             notifications: getNotifications(),
             onSelectedDataSources: (dataSources) =>
