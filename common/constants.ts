@@ -250,6 +250,10 @@ export const BULK_API_DOCS_LINK =
   'https://opensearch.org/docs/latest/api-reference/document-apis/bulk/';
 export const SEARCH_PIPELINE_DOCS_LINK =
   'https://opensearch.org/docs/latest/search-plugins/search-pipelines/using-search-pipeline/';
+export const COHERE_EMBEDDING_MODEL_LINK =
+  'https://opensearch.org/docs/latest/ml-commons-plugin/tutorials/index/';
+export const AMAZON_BEDROCK_TITAN_EMBEDDING_MODEL_LINK =
+  'https://opensearch.org/docs/latest/ml-commons-plugin/tutorials/index/';
 
 /**
  * Text chunking algorithm constants

@@ -17,13 +17,14 @@ import {
   EuiCompressedFieldNumber,
   EuiCallOut,
   EuiLink,
+  EuiPopover,
+  EuiSmallButtonEmpty,
 } from '@elastic/eui';
 import {
   DEFAULT_IMAGE_FIELD,
   DEFAULT_LLM_RESPONSE_FIELD,
   DEFAULT_TEXT_FIELD,
   DEFAULT_VECTOR_FIELD,
-  ML_CHOOSE_MODEL_LINK,
   ML_REMOTE_MODEL_LINK,
   MODEL_STATE,
   Model,
@@ -33,6 +34,8 @@ import {
 } from '../../../../common';
 import { AppState } from '../../../store';
 import { getEmbeddingModelDimensions, parseModelInputs } from '../../../utils';
+import { EmbeddingModelPopoverContent } from './embedding_model_popover_content';
+import { LargeLanguageModelPopoverContent } from './large_language_model_popover_content';
 
 interface QuickConfigureInputsProps {
   workflowType?: WORKFLOW_TYPE;
@@ -52,6 +55,12 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
   const [selectedLLMInterface, setSelectedLLMInterface] = useState<
     ModelInterface | undefined
   >(undefined);
+
+  // Embedding model popover state
+  const [embeddingModelPopoverOpen, setEmbeddingModelPopoverOpen] = useState<boolean>(false);
+
+  // Large Language model popover state
+  const [largeLaguageModelPopoverOpen, setLargeLaguageModelPopoverOpen] = useState<boolean>(false);
 
   // Hook to update available deployed models
   useEffect(() => {
@@ -196,12 +205,25 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
                 : 'Embedding model'
             }
             labelAppend={
-              // TODO: update to be a popover with more content.
-              <EuiText size="xs">
-                <EuiLink href={ML_CHOOSE_MODEL_LINK} target="_blank">
-                  Learn more
-                </EuiLink>
-              </EuiText>
+              <EuiPopover
+                    isOpen={embeddingModelPopoverOpen}
+                    initialFocus={false}
+                    anchorPosition="leftCenter"
+                    closePopover={() => setEmbeddingModelPopoverOpen(false)}
+                    button={
+                      <EuiSmallButtonEmpty
+                        style={{ marginTop: '-4px' }}
+                        onClick={() => {
+                          setEmbeddingModelPopoverOpen(!embeddingModelPopoverOpen);
+                        }}
+                      >
+                        Learn more
+                      </EuiSmallButtonEmpty>
+                    }
+                  >
+                    <EmbeddingModelPopoverContent
+                    />
+                  </EuiPopover>
             }
             isInvalid={false}
             helpText={
@@ -284,12 +306,25 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
                   fullWidth={true}
                   label={'Large language model'}
                   labelAppend={
-                    // TODO: update to be a popover with more content.
-                    <EuiText size="xs">
-                      <EuiLink href={ML_CHOOSE_MODEL_LINK} target="_blank">
-                        Learn more
-                      </EuiLink>
-                    </EuiText>
+                    <EuiPopover
+                          isOpen={largeLaguageModelPopoverOpen}
+                          initialFocus={false}
+                          anchorPosition="leftCenter"
+                          closePopover={() => setLargeLaguageModelPopoverOpen(false)}
+                          button={
+                            <EuiSmallButtonEmpty
+                              style={{ marginTop: '-4px' }}
+                              onClick={() => {
+                                setLargeLaguageModelPopoverOpen(!largeLaguageModelPopoverOpen);
+                              }}
+                            >
+                              Learn more
+                            </EuiSmallButtonEmpty>
+                          }
+                        >
+                          <LargeLanguageModelPopoverContent
+                          />
+                        </EuiPopover>
                   }
                   isInvalid={false}
                   helpText={
