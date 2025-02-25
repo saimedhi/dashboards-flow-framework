@@ -157,6 +157,23 @@ export function isValidWorkflow(workflowObj: any): boolean {
   return workflowObj?.name !== undefined;
 }
 
+export async function isCompatibleWorkflow(
+  workflowObj: { version?: { compatibility?: Record<string, unknown> } }, 
+  dataSourceId?: string
+): Promise<boolean> {
+  const compatibility = workflowObj?.version?.compatibility;
+  
+  if (!compatibility) {
+    return false;
+  }
+
+  const effectiveVersion = await getEffectiveVersion(dataSourceId);
+  return effectiveVersion in compatibility;
+
+  
+}
+
+
 export function isValidUiWorkflow(workflowObj: any): boolean {
   return (
     isValidWorkflow(workflowObj) &&
