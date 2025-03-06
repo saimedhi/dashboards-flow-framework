@@ -65,6 +65,7 @@ export function QuickConfigureOptionalFields(
     let defaultFieldValues = {} as QuickConfigureFields;
     switch (props.workflowType) {
       case WORKFLOW_TYPE.SEMANTIC_SEARCH:
+      case WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH:
       case WORKFLOW_TYPE.HYBRID_SEARCH: {
         defaultFieldValues = {
           textField: DEFAULT_TEXT_FIELD,

@@ -445,6 +445,7 @@ function injectQuickConfigureFields(
     switch (workflow.ui_metadata?.type) {
       case WORKFLOW_TYPE.SEMANTIC_SEARCH:
       case WORKFLOW_TYPE.HYBRID_SEARCH:
+      case WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH:
       case WORKFLOW_TYPE.MULTIMODAL_SEARCH: {
         if (!isEmpty(quickConfigureFields) && workflow.ui_metadata?.config) {
           workflow.ui_metadata.config = updateIngestProcessors(
