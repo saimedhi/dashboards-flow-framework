@@ -154,6 +154,14 @@ export const OPENAI_CONFIGS = {
   } as RemoteEmbeddingModelConfig,
 };
 
+// Neural Sparse
+export const NEURAL_SPARSE_CONFIGS = {
+  [`opensearch-neural-sparse-encoding-v2-distill`]: {
+    dimension: 30522,
+    fieldName: 'passage_embedding',
+  } as RemoteEmbeddingModelConfig,
+};
+
 /**
  * Various constants pertaining to Workflow configs
  */
@@ -175,6 +183,7 @@ export enum WORKFLOW_TYPE_LEGACY {
   SEMANTIC_SEARCH = 'Semantic Search',
   MULTIMODAL_SEARCH = 'Multimodal Search',
   HYBRID_SEARCH = 'Hybrid Search',
+  NEURAL_SPARSE_SEARCH = 'Neural Sparse Search',
   CUSTOM = 'Custom Search',
   UNKNOWN = 'Unknown',
 }
@@ -432,6 +441,20 @@ export const FETCH_ALL_QUERY_LARGE = {
   size: 1000,
 };
 export const KNN_QUERY = {
+  _source: {
+    excludes: [VECTOR_FIELD_PATTERN],
+  },
+  query: {
+    knn: {
+      [VECTOR_FIELD_PATTERN]: {
+        vector: VECTOR_PATTERN,
+        k: DEFAULT_K,
+      },
+    },
+  },
+  size: 10,
+};
+export const NEURAL_SPARSE_QUERY = {
   _source: {
     excludes: [VECTOR_FIELD_PATTERN],
   },

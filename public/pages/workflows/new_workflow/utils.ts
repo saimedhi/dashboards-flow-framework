@@ -64,6 +64,10 @@ export function enrichPresetWorkflowWithUiMetadata(
       uiMetadata = fetchVectorSearchWithRAGMetadata(workflowVersion);
       break;
     }
+    case WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH: {
+      uiMetadata = fetchNeuralSparseSearchMetadata(workflowVersion);
+      break;
+    }
     default: {
       uiMetadata = fetchEmptyMetadata();
       break;
@@ -179,6 +183,27 @@ export function fetchSemanticSearchMetadata(version: string): UIState {
   return baseState;
 }
 
+export function fetchNeuralSparseSearchMetadata(version: string): UIState {
+  let baseState = fetchEmptyMetadata();
+  baseState.type = WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH;
+  // Ingest config: Index w/ an ML inference processor
+  baseState.config.ingest.enrich.processors = [new MLIngestProcessor().toObj()];
+  baseState.config.ingest.index.name.value = generateId('neural_sparse_index', 6);
+   // Search config: fetch all query => ML inference processor for generating embeddings =>
+   // ML inference processor for returning LLM-generated response of results
+  baseState.config.search.request.value = customStringify(FETCH_ALL_QUERY);
+  baseState.config.search.enrichRequest.processors = [
+    injectQueryTemplateInProcessor(
+      new MLSearchRequestProcessor().toObj(),
+      KNN_QUERY
+    ),
+  ];
+  baseState.config.search.enrichResponse.processors = [
+    new MLSearchResponseProcessor().toObj(),
+  ];
+
+  return baseState;
+}
 export function fetchMultimodalSearchMetadata(version: string): UIState {
   const isPreV219 = semver.lt(version, MINIMUM_FULL_SUPPORTED_VERSION);
   let baseState = fetchEmptyMetadata();
