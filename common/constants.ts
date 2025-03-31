@@ -154,6 +154,14 @@ export const OPENAI_CONFIGS = {
   } as RemoteEmbeddingModelConfig,
 };
 
+// Neural Sparse
+export const NEURAL_SPARSE_CONFIGS = {
+  [`opensearch-neural-sparse-encoding-v2-distill`]: {
+    dimension: 30522,
+    fieldName: 'passage_embedding',
+  } as RemoteEmbeddingModelConfig,
+};
+
 /**
  * Various constants pertaining to Workflow configs
  */
@@ -165,6 +173,7 @@ export enum WORKFLOW_TYPE {
   SEMANTIC_SEARCH = 'Semantic Search',
   MULTIMODAL_SEARCH = 'Multimodal Search',
   HYBRID_SEARCH = 'Hybrid Search',
+  NEURAL_SPARSE_SEARCH = 'Neural Sparse Search',
   RAG = 'RAG with Lexical Retrieval',
   VECTOR_SEARCH_WITH_RAG = 'RAG with Vector Retrieval',
   CUSTOM = 'Custom Search',
@@ -174,6 +183,7 @@ export enum WORKFLOW_TYPE_LEGACY {
   SEMANTIC_SEARCH = 'Semantic Search',
   MULTIMODAL_SEARCH = 'Multimodal Search',
   HYBRID_SEARCH = 'Hybrid Search',
+  NEURAL_SPARSE_SEARCH = 'Neural Sparse Search',
   CUSTOM = 'Custom Search',
   UNKNOWN = 'Unknown',
 }
@@ -444,6 +454,19 @@ export const KNN_QUERY = {
   },
   size: 10,
 };
+export const NEURAL_SPARSE_SEARCH_QUERY = {
+  _source: {
+    excludes: [VECTOR_FIELD_PATTERN],
+  },
+  query: {
+    neural_sparse: {
+      [VECTOR_FIELD_PATTERN]: {
+        query_tokens: VECTOR_PATTERN,
+      },
+    },
+  },
+};
+
 export const SEMANTIC_SEARCH_QUERY_NEURAL = {
   _source: {
     excludes: [VECTOR_FIELD_PATTERN],
@@ -636,6 +659,10 @@ export const QUERY_PRESETS = [
   {
     name: 'Basic k-NN',
     query: customStringify(KNN_QUERY),
+  },
+  {
+    name: 'Neural Sparse Search Query',
+    query: customStringify(NEURAL_SPARSE_SEARCH_QUERY),
   },
   {
     name: WORKFLOW_TYPE.MULTIMODAL_SEARCH,

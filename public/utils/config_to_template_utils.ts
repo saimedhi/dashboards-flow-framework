@@ -633,6 +633,8 @@ function processModelOutputs(mapFormValue: OutputMapFormValue): {} {
       mapEntry.value.transformType === TRANSFORM_TYPE.EXPRESSION &&
       !isEmpty(mapEntry.value.nestedVars)
     ) {
+      console.log("mapEntry.value.nestedVars");
+      console.log(mapEntry.value.nestedVars);
       mapEntry.value.nestedVars?.forEach((nestedVar) => {
         outputMap = {
           ...outputMap,

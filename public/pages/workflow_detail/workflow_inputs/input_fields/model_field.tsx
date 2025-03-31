@@ -55,6 +55,7 @@ type ModelItem = ModelFormValue & {
  * A specific field for selecting existing deployed models
  */
 export function ModelField(props: ModelFieldProps) {
+  console.log(props.fieldPath);
   const dispatch = useAppDispatch();
   const dataSourceId = getDataSourceId();
   // Initial store is fetched when loading base <DetectorDetail /> page. We don't

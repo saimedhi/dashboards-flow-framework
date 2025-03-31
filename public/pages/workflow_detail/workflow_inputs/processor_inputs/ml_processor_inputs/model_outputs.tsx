@@ -348,6 +348,11 @@ export function ModelOutputs(props: ModelOutputsProps) {
                                         {transformType ===
                                         TRANSFORM_TYPE.EXPRESSION ? (
                                           <>
+                                          {console.log('Before accessing transformation JSON path:', values)}
+                                          {console.log(
+                                            'Current transformation path:',
+                                            `${outputMapFieldPath}.${idx}.value.nestedVars`
+                                          )}
                                             {isEmpty(
                                               getIn(
                                                 values,
@@ -417,6 +422,10 @@ export function ModelOutputs(props: ModelOutputsProps) {
                                                   />
                                                 </EuiFlexItem>
                                               </EuiFlexGroup>
+                                            )}
+                                            {console.log(
+                                              'After accessing transformation JSON path:',
+                                              getIn(values, `${outputMapFieldPath}.${idx}.value.nestedVars`)
                                             )}
                                           </>
                                         ) : transformType ===

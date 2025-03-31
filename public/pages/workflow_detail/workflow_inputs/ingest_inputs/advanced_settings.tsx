@@ -28,6 +28,7 @@ import {
 
 interface AdvancedSettingsProps {
   setHasInvalidDimensions: (hasInvalidDimensions: boolean) => void;
+  indexName?: string;
 }
 
 /**
@@ -62,9 +63,11 @@ export function AdvancedSettings(props: AdvancedSettingsProps) {
               ? getEmbeddingModelDimensions(processorConnector)
               : undefined;
 
+          console.log("printed1")
+          console.log(processorConnector.parameters?.model?.includes('neural-sparse'))
           // If a dimension is found, it is a known embedding model.
           // Ensure the index is configured to be knn-enabled.
-          if (dimension !== undefined) {
+          if (dimension !== undefined && !processorConnector.parameters?.model?.includes('neural-sparse')) {
             if (!isKnnIndex(curSettings)) {
               setFieldValue(
                 indexSettingsPath,

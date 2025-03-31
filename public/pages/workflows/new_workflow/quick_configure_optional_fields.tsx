@@ -65,6 +65,7 @@ export function QuickConfigureOptionalFields(
     let defaultFieldValues = {} as QuickConfigureFields;
     switch (props.workflowType) {
       case WORKFLOW_TYPE.SEMANTIC_SEARCH:
+      case WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH:
       case WORKFLOW_TYPE.HYBRID_SEARCH: {
         defaultFieldValues = {
           textField: DEFAULT_TEXT_FIELD,
@@ -183,6 +184,7 @@ export function QuickConfigureOptionalFields(
         {(props.workflowType === WORKFLOW_TYPE.SEMANTIC_SEARCH ||
           props.workflowType === WORKFLOW_TYPE.MULTIMODAL_SEARCH ||
           props.workflowType === WORKFLOW_TYPE.HYBRID_SEARCH ||
+          props.workflowType === WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH ||
           props.workflowType === WORKFLOW_TYPE.VECTOR_SEARCH_WITH_RAG) && (
           <>
             <EuiCompressedFormRow
@@ -203,6 +205,7 @@ export function QuickConfigureOptionalFields(
               />
             </EuiCompressedFormRow>
             <EuiSpacer size="s" />
+            {props.workflowType !== WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH && (
             <EuiCompressedFormRow
               fullWidth={true}
               label={'Embedding length'}
@@ -220,6 +223,7 @@ export function QuickConfigureOptionalFields(
                 }}
               />
             </EuiCompressedFormRow>
+            )}
           </>
         )}
         {(props.workflowType === WORKFLOW_TYPE.RAG ||
