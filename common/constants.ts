@@ -175,7 +175,7 @@ export enum WORKFLOW_TYPE {
   SEMANTIC_SEARCH = 'Semantic Search',
   MULTIMODAL_SEARCH = 'Multimodal Search',
   HYBRID_SEARCH = 'Hybrid Search',
-  NEURAL_SPARSE_SEARCH = 'Neural Sparse Search',
+  SEMANTIC_SEARCH_USING_SPARSE_ENCODERS = 'Semantic Search using Sparse Encoders',
   VECTOR_SEARCH_WITH_RAG = 'RAG with Vector Retrieval',
   HYBRID_SEARCH_WITH_RAG = 'RAG with Hybrid Search',
   CUSTOM = 'Custom Search',
@@ -216,6 +216,7 @@ export enum MODEL_TYPE {
 export enum MODEL_CATEGORY {
   EMBEDDING = 'EMBEDDING',
   LLM = 'LLM',
+  SPARSE_ENCODER = 'SPARSE_ENCODER',
 }
 
 /**

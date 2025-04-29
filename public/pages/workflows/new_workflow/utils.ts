@@ -65,7 +65,7 @@ export function enrichPresetWorkflowWithUiMetadata(
       uiMetadata = fetchHybridSearchWithRAGMetadata(workflowVersion);
       break;
     }
-    case WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH: {
+    case WORKFLOW_TYPE.SEMANTIC_SEARCH_USING_SPARSE_ENCODERS: {
       uiMetadata = fetchNeuralSparseSearchMetadata(workflowVersion);
       break;
     }
@@ -186,7 +186,7 @@ export function fetchSemanticSearchMetadata(version: string): UIState {
 
 export function fetchNeuralSparseSearchMetadata(version: string): UIState {
   let baseState = fetchEmptyMetadata();
-  baseState.type = WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH;
+  baseState.type = WORKFLOW_TYPE.SEMANTIC_SEARCH_USING_SPARSE_ENCODERS;
 
   baseState.config.ingest.enrich.processors = [new MLIngestProcessor().toObj()];
 

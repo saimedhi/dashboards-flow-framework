@@ -516,21 +516,23 @@ Single ML inference processor. Map your input text to the `text_doc` model input
 
 ### Search pipeline
 
-Single ML inference **search request** processor. Map the query field containing the input text to the `text_doc` model input field. Optionally map the output `response` to a new field. Transform the response if needed using JSONPath expression. Override the query to a neural sparse query. For example:
+Single ML inference **search request** processor. Map the query field containing the input text to the `text_doc` model input field. Optionally map the output `response` to a new field. Transform the response if needed using JSONPath expression. Neural Sparse Template Query is used. For example:
 
 ```
 {
-    "_source": {
-        "excludes": [
-            "<embedding_field>"
-        ]
-    },
-    "query": {
-        "neural_sparse": {
-            "<embedding_field>": {
-                "query_tokens": ${response},
-            }
-        }
+  "ext": {
+    "ml_inference": {
+      "text": "{{query_text}}"
     }
+  },
+  "query": {
+    "template": {
+      "neural_sparse": {
+        "<embedding_field>": {
+          "query_tokens": "${vector}"
+        }
+      }
+    }
+  }
 }
 ```

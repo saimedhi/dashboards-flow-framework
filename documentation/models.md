@@ -498,16 +498,16 @@ POST /_plugins/_ml/connectors/_create
   },
   "actions": [
     {
-      "action_type": "predict",
-      "method": "POST",
-      "headers": {
-        "content-type": "application/json"
-      },
-      "url": "https://runtime.sagemaker.us-east-1.amazonaws.com/endpoints/ns-handler-3/invocations",
-     "request_body": "[\"${parameters.text_doc}\"]"
-
-    }
-  ]
+        "action_type": "predict",
+        "method": "POST",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "url": "https://runtime.sagemaker.us-east-1.amazonaws.com/endpoints/ns-handler-3/invocations",
+        "request_body": "[\"${parameters.text_doc}\"]",
+        "post_process_function": "String escape(def input) { if (input instanceof String) { if (input.contains('\\\\')) { input = input.replace('\\\\', '\\\\\\\\'); } if (input.contains('\"')) { input = input.replace('\"', '\\\\\"'); } if (input.contains('\r')) { input = input.replace('\r', '\\\\r'); } if (input.contains('\t')) { input = input.replace('\t', '\\\\t'); } if (input.contains('\n')) { input = input.replace('\n', '\\\\n'); } if (input.contains('\b')) { input = input.replace('\b', '\\\\b'); } if (input.contains('\f')) { input = input.replace('\f', '\\\\f'); } return input; } return input.toString(); } if (params.result == null || params.result.length == 0) { return '{\"dataAsMap\":{\"error\":\"no response error\"}}'; } String response = params.result[0].toString(); response = response.substring(1, response.length() - 1).replace('=', '\":').replace(', ', ',\"'); return '{\"dataAsMap\":{\"response\":{\"' + response + '}}}';"
+        }
+    ]
 }
 ```
 
@@ -551,21 +551,15 @@ POST /_plugins/_ml/models/_register
                             "items": {
                                 "type": "object",
                                 "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
                                     "dataAsMap": {
                                         "type": "object",
                                         "properties": {
                                             "response": {
-                                                "type": "array",
-                                                "items": {
                                                     "type": "object",
                                                     "additionalProperties": {
                                                         "type": "number"
                                                     }
                                                 }
-                                            }
                                         },
                                         "required": [
                                             "response"
@@ -573,7 +567,6 @@ POST /_plugins/_ml/models/_register
                                     }
                                 },
                                 "required": [
-                                    "name",
                                     "dataAsMap"
                                 ]
                             }

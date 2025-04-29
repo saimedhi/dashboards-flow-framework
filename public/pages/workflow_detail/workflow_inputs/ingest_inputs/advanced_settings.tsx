@@ -65,7 +65,7 @@ export function AdvancedSettings(props: AdvancedSettingsProps) {
 
           // If a dimension is found, it is a known embedding model.
           // Ensure the index is configured to be knn-enabled.
-          if (dimension !== undefined && props.workflowType !== WORKFLOW_TYPE.NEURAL_SPARSE_SEARCH) {
+          if (dimension !== undefined && props.workflowType !== WORKFLOW_TYPE.SEMANTIC_SEARCH_USING_SPARSE_ENCODERS) {
             if (!isKnnIndex(curSettings)) {
               setFieldValue(
                 indexSettingsPath,
